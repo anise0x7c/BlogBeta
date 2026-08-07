@@ -4,26 +4,14 @@
    instead of relying solely on prefers-color-scheme. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* =========================================================================
-   Design tokens
-   - @theme defines static theme values (fonts, radii) that Tailwind turns
-     into utilities + CSS vars.
-   - @theme inline maps *semantic* color names to per-theme CSS variables so
-     that utilities like `bg-canvas` resolve to the right value in light/dark
-     without needing `dark:` on every element.
-   - Components should ONLY consume the semantic names (canvas, surface, text,
-     muted, accent, border...) and never the raw per-theme values directly.
-   ========================================================================= */
+/* Design tokens: static values exposed as Tailwind utilities + CSS vars. */
 @theme {
-  /* Font stacks — Nunito (rounded body), Caveat/Ma Shan Zheng (handwritten),
-     JetBrains Mono (code). System fallbacks until web fonts load. */
   --font-sans: "Nunito", "PingFang SC", "Noto Sans SC", system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
   --font-display: "Caveat", "Ma Shan Zheng", cursive;
   --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", "SF Mono", Menlo,
     Consolas, "Liberation Mono", monospace;
 
-  /* Radii — deliberately large for a soft, cute feel. */
   --radius-sm: 0.5rem;
   --radius-md: 0.9rem;
   --radius-lg: 1.25rem;
@@ -31,8 +19,6 @@
   --radius-2xl: 2.25rem;
   --radius-pill: 999px;
 
-  /* Skeuomorphic shadow layers — warm-brown tinted (never pure black) so the
-     page reads as paper lit by warm light, not a flat screen. */
   --shadow-flat: 0 1px 0 rgba(120, 90, 50, 0.06);
   --shadow-sticky: 0 2px 4px rgba(120, 90, 50, 0.1),
     0 1px 1px rgba(120, 90, 50, 0.08);
@@ -42,18 +28,16 @@
     0 4px 8px rgba(120, 90, 50, 0.1);
   --shadow-press: inset 0 1px 3px rgba(120, 90, 50, 0.14);
 
-  /* Motion */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Layout widths — single source of truth. */
   --container-page: 72rem;
   --container-article: 64rem;
   --container-prose: 44rem;
 }
 
-/* Semantic color aliases. Using `inline` makes the generated utilities
-   reference the var() at use-site, so swapping themes at runtime just works. */
+/* Semantic aliases: `inline` resolves the var() at use-site, so theme swaps
+   just work. Consume only these names, never the raw values. */
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
@@ -72,8 +56,6 @@
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
 
-  /* Sticker palette — stable names across themes, used for classification
-     and decoration only (never for primary actions). */
   --color-mint: var(--c-mint);
   --color-sky: var(--c-sky);
   --color-lemon: var(--c-lemon);
@@ -157,15 +139,20 @@
   }
 
   body {
-    /* Layer 1: solid paper colour. Layer 2: a faint dot-grid (bullet-journal
-       paper) derived from the ink colour so it tracks both themes. */
+    /* Layer 1: solid paper colour. Layer 2: a faint square grid (graph-paper)
+       derived from the ink colour so it tracks both themes. */
     background-color: var(--color-canvas);
-    background-image: radial-gradient(
-      color-mix(in srgb, var(--color-text) 5%, transparent) 1px,
-      transparent 1px
-    );
-    background-size: 1.25rem 1.25rem;
-    background-position: -0.625rem -0.625rem;
+    background-image: linear-gradient(
+        color-mix(in srgb, var(--color-text) 5%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--color-text) 5%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 1.5rem 1.5rem;
+    background-position: -0.5px -0.5px;
     color: var(--color-text);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
