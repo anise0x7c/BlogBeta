@@ -1,6 +1,7 @@
 ---
 import type { MarkdownHeading } from "astro";
 import type { Post } from "../utils/posts";
+import { stickerColor } from "../utils/color";
 import BaseLayout from "./BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 
@@ -35,7 +36,11 @@ const hasToc = tocItems.length > 0;
         tags.length > 0 && (
           <ul class="tags">
             {tags.map((tag) => (
-              <li class="tag">#{tag}</li>
+              <li>
+                <span class="chip" style={`--tag-color: ${stickerColor(tag)}`}>
+                  #{tag}
+                </span>
+              </li>
             ))}
           </ul>
         )
@@ -157,14 +162,6 @@ const hasToc = tocItems.length > 0;
     padding: 0;
   }
 
-  .tag {
-    font-size: 0.8rem;
-    color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-    padding: 0.15rem 0.55rem;
-    border-radius: 999px;
-  }
-
   .post-body {
     display: block;
   }
@@ -194,12 +191,11 @@ const hasToc = tocItems.length > 0;
   }
 
   .toc-title {
-    font-size: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-subtle);
-    margin: 0 0 0.6rem;
+    color: var(--color-text);
+    margin: 0 0 0.5rem;
   }
 
   .toc ul {
@@ -211,7 +207,7 @@ const hasToc = tocItems.length > 0;
   }
 
   .toc-item {
-    border-left: 1px solid var(--color-border);
+    border-left: 1px dashed var(--color-border-strong);
   }
 
   .toc-item.indent {

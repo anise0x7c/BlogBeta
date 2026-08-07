@@ -45,6 +45,7 @@ function isActive(href: string): boolean {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-flat);
   }
 
   .header-inner {
@@ -60,10 +61,11 @@ function isActive(href: string): boolean {
 
   .brand {
     display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+    align-items: baseline;
+    gap: 0.45rem;
     font-weight: 700;
-    font-size: 1.05rem;
+    font-size: 1.5rem;
+    line-height: 1;
     letter-spacing: -0.01em;
     color: var(--color-text);
     text-decoration: none;
@@ -71,6 +73,13 @@ function isActive(href: string): boolean {
 
   .brand-mark {
     color: var(--color-accent);
+    font-size: 1.1em;
+  }
+
+  .brand-text {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
   }
 
   .nav {

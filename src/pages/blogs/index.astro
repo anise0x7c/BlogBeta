@@ -15,7 +15,9 @@ const posts = await getPublishedPosts();
 
     {
       posts.length === 0 ? (
-        <p class="empty">No posts yet — check back soon.</p>
+        <p class="empty">
+          <span class="empty-mark">✿</span> 还没有笔记 —— 很快就回来啦～
+        </p>
       ) : (
         <ul class="card-grid">
           {posts.map((post) => (
@@ -54,7 +56,16 @@ const posts = await getPublishedPosts();
   }
 
   .empty {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
     color: var(--color-subtle);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .empty-mark {
+    color: var(--color-accent);
   }
 
   .card-grid {

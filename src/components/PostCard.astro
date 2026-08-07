@@ -1,21 +1,32 @@
 ---
 import type { Post } from "../utils/posts";
+import { stickerColor } from "../utils/color";
 import FormattedDate from "./FormattedDate.astro";
 
 interface Props {
   post: Post;
+  featured?: boolean;
 }
 
-const { post } = Astro.props;
+const { post, featured = false } = Astro.props;
 const { title, description, pubDate, tags } = post.data;
+const firstTag = tags[0];
+const tagColor = firstTag ? stickerColor(firstTag) : undefined;
 ---
 
-<a class="card" href={`/blogs/${post.id}`}>
+<a
+  class:list={["card", { featured, "washi-tape": featured }]}
+  href={`/blogs/${post.id}`}
+  style={tagColor ? `--tag-color: ${tagColor}` : undefined}
+>
   <div class="card-meta">
     <FormattedDate date={pubDate} />
     {
-      tags[0] && (
-        <span class="card-tag">#{tags[0]}</span>
+      firstTag && (
+        <span class="chip">
+          <span class="dot" />
+          #{firstTag}
+        </span>
       )
     }
   </div>
@@ -25,21 +36,39 @@ const { title, description, pubDate, tags } = post.data;
 
 <style>
   .card {
+    position: relative;
     display: block;
     height: 100%;
-    padding: 1.25rem 1.4rem;
+    padding: 1.4rem 1.5rem;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
     text-decoration: none;
     transition:
-      border-color 0.2s ease,
-      transform 0.15s ease;
+      transform 0.2s var(--ease-bounce),
+      box-shadow 0.2s var(--ease-bounce),
+      border-color 0.2s var(--ease-bounce);
   }
 
   .card:hover {
-    border-color: var(--color-accent);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-float);
+    border-color: var(--color-border-strong);
+  }
+
+  .card:active {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-press);
+  }
+
+  /* Featured card: scrapbook tilt + washi-tape strip (via global utility). */
+  .featured {
+    transform: rotate(-0.8deg);
+  }
+
+  .featured:hover {
+    transform: rotate(-0.8deg) translateY(-3px);
   }
 
   .card-meta {
@@ -50,21 +79,25 @@ const { title, description, pubDate, tags } = post.data;
     color: var(--color-subtle);
   }
 
-  .card-tag {
-    color: var(--color-accent);
-  }
-
   .card h3 {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    margin: 0.4rem 0 0.35rem;
+    margin: 0.5rem 0 0.4rem;
     color: var(--color-text);
+    letter-spacing: -0.01em;
   }
 
   .card p {
     margin: 0;
     color: var(--color-muted);
     font-size: 0.95rem;
-    line-height: 1.5;
+    line-height: 1.55;
+  }
+
+  .dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: var(--radius-pill);
+    background: var(--tag-color, var(--color-accent));
   }
 </style>

@@ -15,29 +15,41 @@
      muted, accent, border...) and never the raw per-theme values directly.
    ========================================================================= */
 @theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji";
-  --font-mono: ui-monospace, "JetBrains Mono", "Fira Code", "SF Mono", Menlo,
+  /* Font stacks — Nunito (rounded body), Caveat/Ma Shan Zheng (handwritten),
+     JetBrains Mono (code). System fallbacks until web fonts load. */
+  --font-sans: "Nunito", "PingFang SC", "Noto Sans SC", system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display: "Caveat", "Ma Shan Zheng", cursive;
+  --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", "SF Mono", Menlo,
     Consolas, "Liberation Mono", monospace;
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
+  /* Radii — deliberately large for a soft, cute feel. */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
+  --radius-pill: 999px;
 
-  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  /* Skeuomorphic shadow layers — warm-brown tinted (never pure black) so the
+     page reads as paper lit by warm light, not a flat screen. */
+  --shadow-flat: 0 1px 0 rgba(120, 90, 50, 0.06);
+  --shadow-sticky: 0 2px 4px rgba(120, 90, 50, 0.1),
+    0 1px 1px rgba(120, 90, 50, 0.08);
+  --shadow-card: 0 4px 12px rgba(120, 90, 50, 0.1),
+    0 2px 4px rgba(120, 90, 50, 0.08);
+  --shadow-float: 0 12px 28px rgba(120, 90, 50, 0.16),
+    0 4px 8px rgba(120, 90, 50, 0.1);
+  --shadow-press: inset 0 1px 3px rgba(120, 90, 50, 0.14);
 
+  /* Motion */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Layout widths — shared single source of truth.
-     Pages reference these instead of hard-coding max-widths so the whole
-     site scales together and wide-screen gutters stay consistent. */
-  --container-page: 72rem; /* home / blog list / header / footer shell */
-  --container-article: 64rem; /* article page shell (prose + TOC columns) */
-  --container-prose: 44rem; /* readable line length for body copy */
+  /* Layout widths — single source of truth. */
+  --container-page: 72rem;
+  --container-article: 64rem;
+  --container-prose: 44rem;
 }
 
 /* Semantic color aliases. Using `inline` makes the generated utilities
@@ -45,6 +57,7 @@
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-surface-hover: var(--surface-hover);
 
   --color-text: var(--text);
@@ -54,47 +67,82 @@
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
   --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
 
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
+
+  /* Sticker palette — stable names across themes, used for classification
+     and decoration only (never for primary actions). */
+  --color-mint: var(--c-mint);
+  --color-sky: var(--c-sky);
+  --color-lemon: var(--c-lemon);
+  --color-grape: var(--c-grape);
+  --color-peach: var(--c-peach);
+  --color-berry: var(--c-berry);
 }
 
-/* ----- Light theme (default) ----- */
+/* ----- Light theme · 奶油纸 (cream paper) ----- */
 :root {
-  --canvas: #fbfbfd;
+  --canvas: #faf5ec;
   --surface: #ffffff;
-  --surface-hover: #f4f4f6;
+  --surface-2: #f3ece0;
+  --surface-hover: #f6f0e5;
 
-  --text: #18181b;
-  --text-muted: #52525b;
-  --text-subtle: #8b8b94;
+  --text: #322b23;
+  --text-muted: #6a5f52;
+  --text-subtle: #a89b8b;
 
-  --accent: #6366f1;
-  --accent-strong: #4f46e5;
+  --accent: #ff6b8d;
+  --accent-strong: #f24e73;
   --accent-contrast: #ffffff;
+  --accent-soft: rgba(255, 107, 141, 0.14);
 
-  --border: #e6e6ea;
-  --border-strong: #d4d4d8;
+  --border: #eadfcb;
+  --border-strong: #d8c9ae;
+
+  --c-mint: #34c9a3;
+  --c-sky: #4da9e6;
+  --c-lemon: #f5c24b;
+  --c-grape: #a982e8;
+  --c-peach: #ff9c73;
+  --c-berry: #e85a8c;
 
   color-scheme: light;
 }
 
-/* ----- Dark theme ----- */
+/* ----- Dark theme · 夜读牛皮 (night kraft) ----- */
 .dark {
-  --canvas: #0a0a0c;
-  --surface: #161618;
-  --surface-hover: #1f1f23;
+  --canvas: #1b1714;
+  --surface: #261f1a;
+  --surface-2: #1f1916;
+  --surface-hover: #2e2620;
 
-  --text: #f4f4f5;
-  --text-muted: #a1a1aa;
-  --text-subtle: #71717a;
+  --text: #f0e8dc;
+  --text-muted: #b3a695;
+  --text-subtle: #847666;
 
-  --accent: #818cf8;
-  --accent-strong: #a5b4fc;
-  --accent-contrast: #1e1b4b;
+  --accent: #ff8fab;
+  --accent-strong: #ffadc2;
+  --accent-contrast: #3d1521;
+  --accent-soft: rgba(255, 143, 171, 0.16);
 
-  --border: #27272a;
-  --border-strong: #3f3f46;
+  --border: #38302a;
+  --border-strong: #4a3f37;
+
+  --c-mint: #5dddb6;
+  --c-sky: #74c0f0;
+  --c-lemon: #ffd27a;
+  --c-grape: #c2a4f2;
+  --c-peach: #ffb595;
+  --c-berry: #f47fa6;
+
+  /* Warm-brown shadows go grey on dark; deepen them with neutral black. */
+  --shadow-flat: 0 1px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sticky: 0 2px 4px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.32);
+  --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.36);
+  --shadow-press: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 
   color-scheme: dark;
 }
@@ -109,7 +157,15 @@
   }
 
   body {
+    /* Layer 1: solid paper colour. Layer 2: a faint dot-grid (bullet-journal
+       paper) derived from the ink colour so it tracks both themes. */
     background-color: var(--color-canvas);
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--color-text) 5%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 1.25rem 1.25rem;
+    background-position: -0.625rem -0.625rem;
     color: var(--color-text);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
@@ -157,7 +213,7 @@
     font-size: 1.6em;
     margin-top: 2em;
     padding-bottom: 0.3em;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px dashed var(--color-border-strong);
   }
   .prose h3 {
     font-size: 1.3em;
@@ -166,7 +222,8 @@
   .prose a {
     color: var(--color-accent);
     text-decoration: underline;
-    text-underline-offset: 0.15em;
+    text-decoration-style: dotted;
+    text-underline-offset: 0.18em;
     font-weight: 500;
   }
   .prose a:hover {
@@ -175,18 +232,18 @@
   .prose code {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    background: var(--color-surface-hover);
+    background: var(--color-surface-2);
     padding: 0.15em 0.4em;
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
   }
   .prose pre {
-    background: var(--color-surface);
+    background: var(--color-surface-2);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 1rem 1.25rem;
     overflow-x: auto;
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-press);
   }
   .prose pre code {
     background: none;
@@ -195,10 +252,23 @@
     font-size: 0.9em;
   }
   .prose blockquote {
-    border-left: 3px solid var(--color-accent);
-    padding-left: 1em;
-    color: var(--color-muted);
+    position: relative;
+    margin-left: 0;
+    padding: 0.6em 0.9em 0.6em 1.6em;
+    background: var(--color-accent-soft);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    color: var(--color-text);
     font-style: italic;
+  }
+  .prose blockquote::before {
+    /* a little notch, like a torn paper edge */
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 0;
   }
   .prose ul,
   .prose ol {
@@ -219,7 +289,43 @@
   }
   .prose hr {
     border: none;
-    border-top: 1px solid var(--color-border);
+    border-top: 1px dashed var(--color-border-strong);
     margin: 2em 0;
+  }
+
+  /* ----- Reusable journal primitives ----- */
+  /* Tag chip: pass --tag-color (a sticker colour) per instance; falls back to
+     the primary accent. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-pill);
+    color: var(--tag-color, var(--color-accent));
+    background: color-mix(in srgb, var(--tag-color, var(--color-accent)) 16%, transparent);
+  }
+
+  /* Washi-tape strip for featured cards. Place as ::before on a container
+     with `class="washi-tape"`. Colour set via --tag-color. */
+  .washi-tape::before {
+    content: "";
+    position: absolute;
+    top: -0.6rem;
+    left: 1.5rem;
+    width: 5.5rem;
+    height: 1.1rem;
+    background: color-mix(in srgb, var(--tag-color, var(--color-accent)) 65%, transparent);
+    transform: rotate(-4deg);
+    border-radius: 0.1rem;
+    box-shadow: 0 1px 2px rgba(120, 90, 50, 0.12);
+    /* torn ends via uneven mask */
+    -webkit-mask: linear-gradient(90deg, #000 88%, transparent 88%) 0 0 / 0.4rem
+      100% repeat-x;
+    mask: linear-gradient(90deg, #000 88%, transparent 88%) 0 0 / 0.4rem 100%
+      repeat-x;
   }
 }
