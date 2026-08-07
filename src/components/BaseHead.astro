@@ -1,0 +1,50 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<link rel="canonical" href={canonical} />
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- Theme is applied before first paint to avoid a flash of the wrong mode.
+     Runs inline, synchronously, in <head>. -->
+<script is:inline>
+  (() => {
+    const key = "theme";
+    let theme;
+    try {
+      theme = localStorage.getItem(key);
+    } catch {
+      theme = null;
+    }
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    if (theme === "dark" || (!theme && prefersDark)) {
+      document.documentElement.classList.add("dark");
+    }
+  })();
+</script>
