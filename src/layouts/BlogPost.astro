@@ -1,18 +1,22 @@
 ---
+import type { MarkdownHeading } from "astro";
 import type { Post } from "../utils/posts";
 import BaseLayout from "./BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 
 interface Props {
   post: Post;
+  headings?: MarkdownHeading[];
 }
 
-const { post } = Astro.props;
+const { post, headings = [] } = Astro.props;
 const { title, description, pubDate, updatedDate, tags } = post.data;
+const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const hasToc = tocItems.length > 0;
 ---
 
 <BaseLayout title={title} description={description}>
-  <article class="post container">
+  <article class="post" class:list={{ "has-toc": hasToc }}>
     <header class="post-header">
       <div class="meta-row">
         <span class="date">
@@ -39,8 +43,26 @@ const { title, description, pubDate, updatedDate, tags } = post.data;
       <p class="lead">{description}</p>
     </header>
 
-    <div class="prose">
-      <slot />
+    <div class="post-body" class:list={{ "with-toc": hasToc }}>
+      <div class="prose">
+        <slot />
+      </div>
+      {
+        hasToc && (
+          <aside class="toc" aria-label="Table of contents">
+            <p class="toc-title">On this page</p>
+            <nav>
+              <ul>
+                {tocItems.map((h) => (
+                  <li class:list={["toc-item", { indent: h.depth === 3 }]}>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+        )
+      }
     </div>
 
     <footer class="post-footer">
@@ -49,11 +71,53 @@ const { title, description, pubDate, updatedDate, tags } = post.data;
   </article>
 </BaseLayout>
 
+<script>
+  const toc = document.querySelector<HTMLElement>(".toc");
+  if (toc) {
+    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("a"));
+    const linkMap = new Map<Element, HTMLAnchorElement>();
+    for (const link of links) {
+      const id = decodeURIComponent((link.getAttribute("href") ?? "").slice(1));
+      const target = document.getElementById(id);
+      if (target) linkMap.set(target, link);
+    }
+    const targets = Array.from(linkMap.keys());
+
+    let activeLink: HTMLAnchorElement | null = links[0] ?? null;
+    if (activeLink) activeLink.classList.add("active");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const link = linkMap.get(entry.target);
+            if (link && link !== activeLink) {
+              activeLink?.classList.remove("active");
+              link.classList.add("active");
+              activeLink = link;
+            }
+          }
+        }
+      },
+      { rootMargin: "-90px 0px -70% 0px", threshold: 0 },
+    );
+    for (const target of targets) observer.observe(target);
+  }
+</script>
+
 <style>
-  .container {
-    max-width: 44rem;
-    margin: 0 auto;
+  .post {
+    max-width: var(--container-prose);
+    margin-inline: auto;
     padding: 2.5rem 1.25rem 4rem;
+  }
+
+  /* On wide screens, give the article page a wider shell so the body + TOC
+     can sit side by side. Below `lg` it collapses to the prose measure. */
+  @media (min-width: 1024px) {
+    .post.has-toc {
+      max-width: var(--container-article);
+    }
   }
 
   .post-header {
@@ -99,6 +163,83 @@ const { title, description, pubDate, updatedDate, tags } = post.data;
     background: color-mix(in srgb, var(--color-accent) 12%, transparent);
     padding: 0.15rem 0.55rem;
     border-radius: 999px;
+  }
+
+  .post-body {
+    display: block;
+  }
+
+  @media (min-width: 1024px) {
+    .post-body.with-toc {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 15rem;
+      gap: 3rem;
+      align-items: start;
+    }
+  }
+
+  /* Table of contents sidebar */
+  .toc {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .post-body.with-toc .toc {
+      display: block;
+      position: sticky;
+      top: 4.5rem;
+      max-height: calc(100vh - 6rem);
+      overflow-y: auto;
+    }
+  }
+
+  .toc-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-subtle);
+    margin: 0 0 0.6rem;
+  }
+
+  .toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .toc-item {
+    border-left: 1px solid var(--color-border);
+  }
+
+  .toc-item.indent {
+    padding-left: 0.75rem;
+  }
+
+  .toc-item a {
+    display: block;
+    padding: 0.2rem 0 0.2rem 0.65rem;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .toc-item a:hover {
+    color: var(--color-text);
+  }
+
+  .toc-item a.active {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+    font-weight: 500;
   }
 
   .post-footer {

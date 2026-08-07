@@ -1,0 +1,70 @@
+---
+import type { Post } from "../utils/posts";
+import FormattedDate from "./FormattedDate.astro";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, tags } = post.data;
+---
+
+<a class="card" href={`/blogs/${post.id}`}>
+  <div class="card-meta">
+    <FormattedDate date={pubDate} />
+    {
+      tags[0] && (
+        <span class="card-tag">#{tags[0]}</span>
+      )
+    }
+  </div>
+  <h3>{title}</h3>
+  <p>{description}</p>
+</a>
+
+<style>
+  .card {
+    display: block;
+    height: 100%;
+    padding: 1.25rem 1.4rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition:
+      border-color 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--color-subtle);
+  }
+
+  .card-tag {
+    color: var(--color-accent);
+  }
+
+  .card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0.4rem 0 0.35rem;
+    color: var(--color-text);
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+</style>

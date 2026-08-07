@@ -31,6 +31,13 @@
   --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
 
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout widths — shared single source of truth.
+     Pages reference these instead of hard-coding max-widths so the whole
+     site scales together and wide-screen gutters stay consistent. */
+  --container-page: 72rem; /* home / blog list / header / footer shell */
+  --container-article: 64rem; /* article page shell (prose + TOC columns) */
+  --container-prose: 44rem; /* readable line length for body copy */
 }
 
 /* Semantic color aliases. Using `inline` makes the generated utilities

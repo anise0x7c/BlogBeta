@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPublishedPosts } from "../../utils/posts";
-import FormattedDate from "../../components/FormattedDate.astro";
+import PostCard from "../../components/PostCard.astro";
 
 const posts = await getPublishedPosts();
 ---
@@ -17,27 +17,10 @@ const posts = await getPublishedPosts();
       posts.length === 0 ? (
         <p class="empty">No posts yet — check back soon.</p>
       ) : (
-        <ul class="list">
+        <ul class="card-grid">
           {posts.map((post) => (
             <li>
-              <a class="item" href={`/blogs/${post.id}`}>
-                <div class="item-main">
-                  <h2>{post.data.title}</h2>
-                  <p>{post.data.description}</p>
-                  {
-                    post.data.tags.length > 0 && (
-                      <div class="item-tags">
-                        {post.data.tags.map((tag) => (
-                          <span class="tag">#{tag}</span>
-                        ))}
-                      </div>
-                    )
-                  }
-                </div>
-                <div class="item-date">
-                  <FormattedDate date={post.data.pubDate} />
-                </div>
-              </a>
+              <PostCard post={post} />
             </li>
           ))}
         </ul>
@@ -48,7 +31,7 @@ const posts = await getPublishedPosts();
 
 <style>
   .container {
-    max-width: 52rem;
+    max-width: var(--container-page);
     margin: 0 auto;
     padding: 3rem 1.25rem 4rem;
   }
@@ -74,77 +57,12 @@ const posts = await getPublishedPosts();
     color: var(--color-subtle);
   }
 
-  .list {
+  .card-grid {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0;
-  }
-
-  .item {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 1.5rem 0;
-    border-top: 1px solid var(--color-border);
-    text-decoration: none;
-    transition: opacity 0.2s ease;
-  }
-
-  .item:last-child {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .item:hover {
-    opacity: 0.85;
-  }
-
-  .item-main {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .item h2 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin: 0 0 0.35rem;
-    color: var(--color-text);
-  }
-
-  .item p {
-    margin: 0 0 0.5rem;
-    color: var(--color-muted);
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-
-  .item-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tag {
-    font-size: 0.75rem;
-    color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-    padding: 0.1rem 0.5rem;
-    border-radius: 999px;
-  }
-
-  .item-date {
-    flex-shrink: 0;
-    font-size: 0.85rem;
-    color: var(--color-subtle);
-    white-space: nowrap;
-  }
-
-  @media (max-width: 540px) {
-    .item {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   }
 </style>
