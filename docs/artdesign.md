@@ -55,14 +55,14 @@
 | `--border-strong` | `#D8C9AE` | 强纸边 | 强调分隔、hover 描边 |
 
 ### 2.3 暗色板（Dark · 夜读牛皮）
-> 不是冷黑，而是「深焙暖棕」——像夜里摊开的深色牛皮手账。强调色提亮以保证对比度。
+> 页面底色取近黑（`#121212`），但卡片、墨色、纸边仍保留暖棕调——黑底暖纸，像夜里摊开的深色牛皮手账。强调色提亮以保证对比度。
 
 | Token (`.dark`) | 值 | 语义 |
 | --- | --- | --- |
-| `--canvas` | `#1B1714` | 夜纸面 |
-| `--surface` | `#261F1A` | 卡片面（抬起） |
-| `--surface-2` | `#1F1916` | 内陷面 |
-| `--surface-hover` | `#2E2620` | 卡片悬停 |
+| `--canvas` | `#121212` | 夜纸面（近黑） |
+| `--surface` | `#1E1A16` | 卡片面（抬起，暖纸） |
+| `--surface-2` | `#171410` | 内陷面 |
+| `--surface-hover` | `#2A231D` | 卡片悬停 |
 | `--text` | `#F0E8DC` | 羊皮纸墨色 |
 | `--text-muted` | `#B3A695` | 次墨色 |
 | `--text-subtle` | `#847666` | 弱墨色 |
@@ -186,6 +186,8 @@
 | **日期戳** | 手写体 `--font-display` + `--text-subtle`，呼应手账记日期 |
 | **空状态** | 一句手写体问候 + 小贴纸插画位 |
 | **TOC 侧栏** | `border-left: dashed --border`，激活项 `--accent` + 实线左条 |
+| **顶栏 Header** | `position:sticky;top:0;z-index:50` · `bg:--canvas`（**实色不透明，非毛玻璃**） · `border-bottom:1px --border` · `--shadow-flat` · 内层 `max-width:--container-page`·`min-height:3.75rem`·两端对齐 `px-1.25rem py-0.75rem` · 品牌字 `--font-display`+`--accent` 标记 · 导航项 `--radius-md`·`--text-muted`·hover/active→`--text`+`--surface-hover` |
+| **搜索框 Search** | 图标按钮触发（同 ThemeToggle 样式：`--radius-md`·`--border`·hover `--surface-hover`） · 点击弹出浮窗 `role="dialog"`：`bg:--surface`·`--radius-2xl`·`--shadow-float`·`max-width 36rem` · 内含输入框 `bg:--surface-2`（内陷面）·`--radius-md`·focus 环 `--accent-soft` + 实时结果列表 · 命中高亮 `<mark>` 用 `--accent-soft` 底 + `--accent-strong` 字 · 无结果 / 索引不可用（如 dev）有空态文案 · Esc / 背景点击关闭 · 打开时锁定 body 滚动 |
 
 ### 5.3 列表 / 网格
 - 卡片网格沿用 `repeat(auto-fill, minmax(20rem,1fr))`。
@@ -310,10 +312,10 @@
 ### 7.4 `.dark`（暗色 · 夜读牛皮）
 ```css
 .dark {
-  --canvas: #1B1714;
-  --surface: #261F1A;
-  --surface-2: #1F1916;
-  --surface-hover: #2E2620;
+  --canvas: #121212;
+  --surface: #1E1A16;
+  --surface-2: #171410;
+  --surface-hover: #2A231D;
 
   --text: #F0E8DC;
   --text-muted: #B3A695;
@@ -349,16 +351,3 @@
   --shadow-press:  inset 0 1px 3px rgba(0, 0, 0, 0.40);
 }
 ```
-
----
-
-## 附录：实施检查清单（重构阶段逐项对照）
-- [ ] 替换 `global.css` 的 `@theme` / `@theme inline` / `:root` / `.dark`（用第 7 章）
-- [ ] 引入字体：`<link>` Nunito(400,700,800) + Caveat(600) + Ma Shan Zheng；在 `BaseHead.astro` 注入
-- [ ] `<body>` 加点阵纸背景层（伪元素或固定层，`prefers-reduced-motion` 不影响）
-- [ ] 卡片组件统一升级：`--radius-lg` + `--shadow-card`，hover 用 `--ease-bounce`
-- [ ] 标签 chip 按分类分配贴纸色
-- [ ] 手写体点睛：hero eyebrow / 日期 / 空状态（≤ 单页 3–4 处）
-- [ ] featured 区试做剪贴簿错位叠放（和纸胶带 + 微旋转）
-- [ ] 暗色阴影覆盖块就位
-- [ ] `astro check` + `build` 通过，明/暗双主题目视验收

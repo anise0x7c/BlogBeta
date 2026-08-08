@@ -1,5 +1,6 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
+import "../styles/global.css";
+import { SITE } from "../consts";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
@@ -8,13 +9,59 @@ interface Props {
   description?: string;
 }
 
-const { title, description } = Astro.props;
+const {
+  title = SITE.title,
+  description = SITE.description,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonical} />
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Web fonts: Nunito (rounded sans body), Caveat + Ma Shan Zheng (handwritten
+         accents). Preconnect first, then the combined stylesheet. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Ma+Shan+Zheng&family=Nunito:wght@400;600;700;800&display=swap"
+    />
+
+    <!-- Theme is applied before first paint to avoid a flash of the wrong mode.
+         Runs inline, synchronously, in <head>. -->
+    <script is:inline>
+      (() => {
+        const key = "theme";
+        let theme;
+        try {
+          theme = localStorage.getItem(key);
+        } catch {
+          theme = null;
+        }
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        if (theme === "dark" || (!theme && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
   </head>
   <body>
     <Header />

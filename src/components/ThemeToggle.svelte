@@ -23,7 +23,7 @@
 
 <button
   type="button"
-  class="theme-toggle"
+  class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-transparent text-muted transition-colors duration-200 hover:border-border-strong hover:bg-surface-hover hover:text-text"
   onclick={toggle}
   aria-label="Toggle dark mode"
   title="Toggle dark mode"
@@ -65,28 +65,3 @@
     </svg>
   {/if}
 </button>
-
-<style>
-  .theme-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: var(--radius-md);
-    color: var(--color-muted);
-    background: transparent;
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    transition:
-      color 0.2s ease,
-      background-color 0.2s ease,
-      border-color 0.2s ease;
-  }
-
-  .theme-toggle:hover {
-    color: var(--color-text);
-    background: var(--color-surface-hover);
-    border-color: var(--color-border-strong);
-  }
-</style>

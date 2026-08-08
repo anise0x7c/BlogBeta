@@ -1,5 +1,6 @@
 ---
-import { SITE_TITLE, NAV_LINKS } from "../consts";
+import { SITE, NAV_LINKS } from "../consts";
+import Search from "./Search.svelte";
 import ThemeToggle from "./ThemeToggle.svelte";
 
 const pathname = Astro.url.pathname;
@@ -9,19 +10,21 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="site-header">
-  <div class="header-inner">
-    <a href="/" class="brand">
-      <span class="brand-mark">✦</span>
-      <span class="brand-text">{SITE_TITLE}</span>
+<header class="sticky z-50 w-full bg-canvas border-b border-border shadow-flat">
+  <div class="mx-auto flex min-h-15 max-w-page items-center justify-between gap-4 px-5 py-3">
+    <a href="/" class="inline-flex items-baseline text-2xl font-bold leading-none tracking-[-0.01em] text-text no-underline">
+      <span class="font-display text-[1.6rem] font-bold">{SITE.title}</span>
     </a>
 
-    <nav class="nav" aria-label="Primary">
+    <nav class="flex items-center gap-1" aria-label="Primary">
       {
         NAV_LINKS.map((link) => (
           <a
             href={link.href}
-            class:list={["nav-link", { active: isActive(link.href) }]}
+            class:list={[
+              "px-[0.8rem] py-[0.4rem] rounded-md text-[0.92rem] font-medium text-muted no-underline transition-colors duration-200 hover:text-text hover:bg-surface-hover",
+              isActive(link.href) && "text-text bg-surface-hover",
+            ]}
           >
             {link.label}
           </a>
@@ -29,96 +32,9 @@ function isActive(href: string): boolean {
       }
     </nav>
 
-    <div class="actions">
+    <div class="flex items-center gap-2">
+      <Search client:idle />
       <ThemeToggle client:load />
     </div>
   </div>
 </header>
-
-<style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    width: 100%;
-    background-color: color-mix(in srgb, var(--color-canvas) 82%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: var(--shadow-flat);
-  }
-
-  .header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    max-width: var(--container-page);
-    margin: 0 auto;
-    padding: 0.75rem 1.25rem;
-    min-height: 3.75rem;
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.45rem;
-    font-weight: 700;
-    font-size: 1.5rem;
-    line-height: 1;
-    letter-spacing: -0.01em;
-    color: var(--color-text);
-    text-decoration: none;
-  }
-
-  .brand-mark {
-    color: var(--color-accent);
-    font-size: 1.1em;
-  }
-
-  .brand-text {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    font-weight: 700;
-  }
-
-  .nav {
-    display: none;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .nav-link {
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius-md);
-    font-size: 0.92rem;
-    font-weight: 500;
-    color: var(--color-muted);
-    text-decoration: none;
-    transition:
-      color 0.2s ease,
-      background-color 0.2s ease;
-  }
-
-  .nav-link:hover {
-    color: var(--color-text);
-    background: var(--color-surface-hover);
-  }
-
-  .nav-link.active {
-    color: var(--color-text);
-    background: var(--color-surface-hover);
-  }
-
-  .actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  @media (min-width: 640px) {
-    .nav {
-      display: flex;
-    }
-  }
-</style>

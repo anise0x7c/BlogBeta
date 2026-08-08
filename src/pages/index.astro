@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_DESCRIPTION } from "../consts";
+import { SITE } from "../consts";
 import { getRecentPosts } from "../utils/posts";
 import PostCard from "../components/PostCard.astro";
 
@@ -10,9 +10,9 @@ const recent = await getRecentPosts(3);
 <BaseLayout>
   <section class="hero container">
     <p class="eyebrow">Hello there</p>
-    <h1>I write things on the internet.</h1>
+    <h1>Welcom to 80ml Spice Jar</h1>
     <p class="lede">
-      {SITE_DESCRIPTION}
+      {SITE.description}
     </p>
     <div class="cta">
       <a class="btn primary" href="/blogs">Read the blog</a>

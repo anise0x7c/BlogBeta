@@ -1,10 +1,11 @@
 // Central place for site-wide, editor-editable constants.
 
-export const SITE_TITLE = "Almanac";
-export const SITE_DESCRIPTION =
-  "A personal corner of the internet — notes, writing, and small experiments.";
-
-export const SITE_AUTHOR = "Anise";
+export const SITE = {
+  title: "80ml Spice Jar",
+  description:
+    "Personal Site/Blog 由于几乎 100% 由 AI 谁知道下一秒会不会爆炸呢 😉",
+  author: "Anise",
+} as const;
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
