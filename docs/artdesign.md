@@ -1,6 +1,6 @@
 # 美术风格指南 · 手账拟物风 (Journal Skeuomorphic)
 
-> 本文件是站点的**美术单一真相源 (single source of truth)**。第 1–6 章讲「为什么与怎么想」，第 7 章给出可直接粘贴进 `src/styles/global.css` 的 CSS 落地块。任何视觉改动都应先回到本指南核对。
+> 本文件是站点的**美术单一真相源 (single source of truth)**。任何视觉改动都应先回到本指南核对。第 7 章「灵感库」是**尚未在代码里落地**的愿景，落地前不构成当前规格。
 
 ---
 
@@ -41,7 +41,7 @@
 | Token (`:root`) | 值 | 语义 | 用途 |
 | --- | --- | --- | --- |
 | `--canvas` | `#FAF5EC` | 纸面 / 页面底色 | `<body>` 背景 |
-| `--surface` | `#FFFFFF` | 卡片面 | 卡片、浮层、便签 |
+| `--surface` | `#FFFFFF` | 卡片面 | 卡片、浮层 |
 | `--surface-sunk` | `#F3ECE0` | 内陷面 / 凹槽 | 代码块底、嵌套区、输入框 |
 | `--surface-hover` | `#F6F0E5` | 卡片悬停 | 列表项 hover |
 | `--text` | `#322B23` | 主墨色 | 正文、标题 |
@@ -61,7 +61,7 @@
 | --- | --- | --- |
 | `--canvas` | `#141311` | 夜纸面（近黑） |
 | `--surface` | `#1F1C1A` | 卡片面（抬起，暖纸） |
-| `--surface-sunk` | `#080400` | 内陷面 |
+| `--surface-sunk` | `#100F0F` | 内陷面 |
 | `--surface-hover` | `#2A231D` | 卡片悬停 |
 | `--text` | `#F0E8DC` | 羊皮纸墨色 |
 | `--text-muted` | `#B3A695` | 次墨色 |
@@ -74,7 +74,7 @@
 | `--border-strong` | `#4A3F37` | 强纸边 |
 
 ### 2.4 多彩贴纸色（Sticker palette · 跨主题）
-> 用于分类标签、分类色点、贴纸点缀。明色板用**实色**，暗色板用**同色提亮 10–15%**（见落地块）。命名稳定，不随主题变。
+> 用于分类标签、分类色点、贴纸点缀。明色板用**实色**，暗色板用**同色提亮 10–15%**（对照 2.2 / 2.3 两表）。命名稳定，不随主题变。
 
 | Token | 明色 | 暗色 | 名称 |
 | --- | --- | --- | --- |
@@ -99,10 +99,11 @@
 
 | Token | 栈 | 用途 |
 | --- | --- | --- |
-| `--font-sans` | `"Nunito", "PingFang SC", "Noto Sans SC", system-ui, sans-serif` | 正文 / 界面（圆润无衬线） |
+| `--font-sans` | `"Nunito", "PingFang SC", "Noto Sans SC", system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"` | 正文 / 界面（圆润无衬线） |
 | `--font-display` | `"Caveat", "Ma Shan Zheng", cursive` | 手写点睛（标题装饰/日期/批注） |
-| `--font-mono` | `"JetBrains Mono", ui-monospace, monospace` | 代码 |
+| `--font-mono` | `"JetBrains Mono", ui-monospace, "Fira Code", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace` | 代码 |
 
+> 上表即 `global.css` 中的实际定义：`--font-sans` 末尾追加 Emoji 兜底，`--font-mono` 追加系统等宽字体兜底链。
 > 字体加载为后续步骤：通过 `<link>` 引入 Google Fonts（Nunito, Caveat）与中文手写（Ma Shan Zheng / ZCOOL KuaiLe）。在接入前，`system-ui` 作为兜底；手写体兜底为 `cursive`。
 
 ### 3.2 手写体用法（**克制**，违例即幼稚）
@@ -110,22 +111,8 @@
 **禁用于**：正文段落、长标题主体、按钮文字、导航、表格数据。
 > 规则：单页手写体出现不超过 3–4 处，且永远是「装饰而非信息载体」。
 
-### 3.3 字号刻度（1.2 模数）
-
-| Token | 值 | 典型用途 |
-| --- | --- | --- |
-| `--text-xs` | `0.75rem` | 元信息、标签 |
-| `--text-sm` | `0.875rem` | 次要文字、卡片 meta |
-| `--text-base` | `1rem` | 正文 |
-| `--text-lg` | `1.125rem` | 引导文字 |
-| `--text-xl` | `1.375rem` | 卡片标题、h3 |
-| `--text-2xl` | `1.75rem` | h2 |
-| `--text-3xl` | `2.25rem` | 页面标题 |
-| `--text-4xl` | `clamp(2rem, 5vw, 3rem)` | hero h1 |
-| `--text-display` | `clamp(3rem, 8vw, 4.5rem)` | hero 装饰大字（可叠手写体） |
-
-### 3.4 字重 / 行高
-- 正文 `font-weight: 400`，行高 `1.7`；标题 `700–800`，行高 `1.2–1.3`、字距 `-0.01em ~ -0.03em`。
+### 3.3 字重 / 行高
+- 正文 `font-weight: 400`，行高 `1.75`；标题 `700–800`，行高 `1.2–1.3`、字距 `-0.01em ~ -0.03em`。
 - 手写体 `font-weight: 600`，行高 `1.1`。
 - 正文最大行宽 **≤ 44rem**（已有 `--container-prose`），守可读性。
 
@@ -139,7 +126,7 @@
 | --- | --- | --- |
 | `--radius-sm` | `0.5rem` | 行内徽标、代码 inline |
 | `--radius-md` | `0.9rem` | 按钮、输入框 |
-| `--radius-lg` | `1.25rem` | 卡片、便签 |
+| `--radius-lg` | `1.25rem` | 卡片 |
 | `--radius-xl` | `1.75rem` | hero / 特色大卡片 |
 | `--radius-2xl` | `2.25rem` | 模态、超特色容器 |
 | `--radius-pill` | `999px` | 标签 chip、胶囊按钮 |
@@ -147,19 +134,17 @@
 ### 4.2 阴影层次（暖棕色基底，非纯黑）
 > 拟物的灵魂是**多层阴影**：一层柔光（大范围模糊）+ 一层接触（贴边锐利），让卡片像「轻轻搁在纸上」。
 
-| Token | 明色值（暗色用 `rgba(0,0,0,.x)` 加深） | 层级 |
+| Token | 明色值（暗色用 `rgba(0,0,0,.x)` 加深，见 .dark 定义） | 层级 |
 | --- | --- | --- |
-| `--shadow-sticky` | `0 2px 4px rgba(120,90,50,0.10), 0 1px 1px rgba(120,90,50,0.08)` | 便签（轻浮起） |
+| `--shadow-sticky` | `0 2px 4px rgba(120,90,50,0.35), 0 1px 1px rgba(120,90,50,0.03)` | 顶栏 / 主按钮 |
 | `--shadow-card` | `0 4px 12px rgba(120,90,50,0.10), 0 2px 4px rgba(120,90,50,0.08)` | 标准卡片 |
 | `--shadow-float` | `0 12px 28px rgba(120,90,50,0.16), 0 4px 8px rgba(120,90,50,0.10)` | 悬浮/悬停态 |
-| `--shadow-press` | `inset 0 1px 3px rgba(120,90,50,0.14)` | 按下/内陷 |
+| `--shadow-press` | `inset 0 2px 3px rgba(120,90,50,0.20)` | 按下/内陷 |
 
 ### 4.3 纸张与胶带质感（拟物细节）
-- **点阵纸背景**：`--canvas` 上叠加极低透明度点阵（`radial-gradient` 圆点，间距 `1.25rem`，颜色 `--text` @ 4%），营造笔记本纸。
-- **和纸胶带 (washi tape)**：特色卡片左/右上角用 `::before` 画一段 6–8rem 宽、1rem 高的半透明贴纸色条带，旋转 `-4° ~ 4°`，`opacity: 0.7`，边缘可加轻微锯齿（`mask` 或 `clip-path` 内凹三角）。
-- **折角**：featured 卡片右下角用 `clip-path` 或双层 `::after` 做小三角折角，露出 `--surface-sunk`。
+- **方格纸背景（当前实现）**：`--canvas` 上叠加极低透明度方格，两层 `linear-gradient`（横竖各一条 1px 线，颜色 `color-mix(--text @ 5%)`），间距 `1.5rem`，营造笔记本/坐标纸感。
 - **缝线/虚线分隔**：列表分隔、TOC 边线优先用 `border-style: dashed` + `--border`，呼应笔记本分隔线。
-- **卡片微旋转**：在「剪贴簿」式区块（如首页 recent posts 的第一张）允许 `transform: rotate(-0.8deg ~ 1.2deg)`，制造手贴感；**正文区/表格不旋转**。
+- 点阵纸、和纸胶带、折角、卡片微旋转等更重的拟物细节见「7. 灵感库」。
 
 ---
 
@@ -168,25 +153,24 @@
 ### 5.1 布局原则
 - 容器宽度复用既有 token：`--container-page 72rem` / `--container-article 64rem` / `--container-prose 44rem`。
 - 卡片是**原子单位**：信息块优先包成卡片（白底 + `--shadow-card` + `--radius-lg` + `1.25–1.5rem` 内边距 + `--border`）。
-- 层次叠放：featured 区可用 2–3 张卡片**错位重叠**（负 margin + 不同阴影层级 + 微旋转）做剪贴簿。
+- 层次叠放：featured 区可用 2–3 张卡片**错位重叠**（负 margin + 不同阴影层级 + 微旋转，微旋转见 7.2）做剪贴簿。
 - 留白慷慨：区块垂直间距 `3–4rem`，卡片内边距 `1.25–1.5rem`。
 
 ### 5.2 组件清单与规格
 
 | 组件 | 规格 |
 | --- | --- |
-| **卡片 Card** | `bg:--surface` · `border:1px --border` · `--radius-lg` · `--shadow-card` · hover→`--shadow-float`+`translateY(-2px)` |
-| **便签 Sticky note** | 卡片变体；`--radius-md` 偏小、顶部贴和纸胶带、轻微旋转、用贴纸色作底 |
+| **卡片 Card** | `bg:--surface` · `border:1px --border` · `--radius-lg` · `--shadow-card` · hover→`--shadow-float`+`translateY(-3px)` |
 | **标签 Chip** | `--radius-pill` · `--accent-soft` 底 + `--accent` 字；分类标签按贴纸色着色（每类一色） |
 | **按钮 Primary** | `--accent` 底 · `--accent-contrast` 字 · `--radius-md` · `--shadow-sticky` · hover `--accent-strong` · active `--shadow-press` |
 | **按钮 Ghost** | 透明底 · `--border` 描边 · hover `--surface-hover` |
-| **链接** | 正文链接 `--accent` + 下划线偏移 `0.15em` |
+| **链接** | 正文链接 `--accent` + 下划线偏移 `0.18em` |
 | **代码块** | `--surface-sunk` 底 · `--radius-lg` · `--shadow-press` · `--font-mono` |
 | **日期戳** | 手写体 `--font-display` + `--text-subtle`，呼应手账记日期 |
 | **空状态** | 一句手写体问候 + 小贴纸插画位 |
 | **TOC 侧栏** | `border-left: dashed --border`，激活项 `--accent` + 实线左条 |
-| **顶栏 Header** | `position:sticky;top:0;z-index:50` · `bg:--canvas`（**实色不透明，非毛玻璃**） · `border-bottom:1px --border` · `--shadow-sticky` · 内层 `max-width:--container-page`·`min-height:3.75rem`·两端对齐 `px-1.25rem py-0.75rem` · 品牌字 `--font-display`+`--accent` 标记 · 导航项 `--radius-md`·`--text-muted`·hover/active→`--text`+`--surface-hover` |
-| **搜索框 Search** | 图标按钮触发（同 ThemeToggle 样式：`--radius-md`·`--border`·hover `--surface-hover`） · 点击弹出浮窗 `role="dialog"`：`bg:--surface`·`--radius-2xl`·`--shadow-float`·`max-width 36rem` · 内含输入框 `bg:--surface-sunk`（内陷面）·`--radius-md`·focus 环 `--accent-soft` + 实时结果列表 · 命中高亮 `<mark>` 用 `--accent-soft` 底 + `--accent-strong` 字 · 无结果 / 索引不可用（如 dev）有空态文案 · Esc / 背景点击关闭 · 打开时锁定 body 滚动 |
+| **顶栏 Header** | `position:sticky;top:0;z-index:50` · `bg:--canvas`（**实色不透明，非毛玻璃**） · `--shadow-sticky`（无 border-bottom） · 内层 `max-width:--container-page`·`min-height:3.75rem`·两端对齐 `px-1.25rem py-0.75rem` · 品牌字 `--font-display`+`--text` · 导航项 `--radius-md`·默认 `--text-muted`·hover→`--text`+`--border-strong`·active→`--text`+`--surface-sunk`+`--shadow-press` |
+| **搜索框 Search** | 图标按钮触发（同 ThemeToggle 样式：`--radius-md`·`--border`·hover `--surface-hover`） · 点击弹出浮窗 `role="dialog"`：`bg:--surface`·`rounded-lg`·`--shadow-float`·`max-width 36rem` · 内含输入框 `bg:--surface-sunk`（内陷面）·`--radius-md`·focus 环 `--accent-soft` + 实时结果列表 · 命中高亮 `<mark>` 用 `--accent-soft` 底 + `--accent-strong` 字 · 无结果 / 索引不可用（如 dev）有空态文案 · Esc / 背景点击关闭 · 打开时锁定 body 滚动 |
 
 ### 5.3 列表 / 网格
 - 卡片网格沿用 `repeat(auto-fill, minmax(20rem,1fr))`。
@@ -198,12 +182,70 @@
 
 | Token / 场景 | 值 | 用途 |
 | --- | --- | --- |
-| `--ease-spring` | `cubic-bezier(0.16, 1, 0.3, 1)` | 平滑出场（已有） |
+| `--ease-spring` | `cubic-bezier(0.16, 1, 0.3, 1)` | 平滑出场 |
 | `--ease-bounce` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | 卡片 hover / 弹入（俏皮回弹） |
-| 卡片 hover | `transform: translateY(-2px) rotate(0)` + `--shadow-float`，时长 `0.2s --ease-bounce` | — |
-| 主题切换 | `background/color 0.25s --ease-spring` | 已有，保持 |
-| 进入动画 | 可选：卡片 `fade+translateY(8px)`，`0.4s --ease-spring`，错峰 `delay` | 视情况启用 |
+| `--animate-fade-in` | `fade-in 0.2s var(--ease-spring)` | 搜索浮层遮罩淡入 |
+| `--animate-modal-in` | `modal-in 0.25s var(--ease-bounce)` | 搜索浮窗弹入（上移+缩放） |
+| 卡片 hover | `transform: translateY(-3px)` + `--shadow-float`，时长 `0.2s --ease-bounce` | PostCard 实现 |
+| 主题切换 | `background/color 0.25s --ease-spring` | body 配色过渡 |
 
-> 动效一律尊重 `prefers-reduced-motion`：开启时禁用旋转与位移，仅保留颜色过渡。
+### 6.1 页面过渡动画（ClientRouter · 上下文感知）
+
+`<ClientRouter />` 开启 SPA 式路由。`<main transition:name="content">` 承载动画，全局 CSS 按 `html[data-nav]` 切换方向：
+
+| `data-nav` | 判定（路由深度） | 旧页 | 新页 |
+| --- | --- | --- | --- |
+| `drill` | `to.depth > from.depth`（深入：`/`→`/blogs`→`/blogs/x`） | 向左滑出 `vt-out-left` | 从右滑入 `vt-in-right` |
+| `back` | `to.depth < from.depth`（返回） | 向右滑出 `vt-out-right` | 从左滑入 `vt-in-left` |
+| `sibling` | 深度相等（文章↔文章） | 淡出+下移 `vt-page-out` | 淡入+上移 `vt-page-in` |
+
+- 路由深度：`/`=0、`/blogs`=1、`/blogs/*`=2，其余按段数兜底；由 `astro:before-swap` 脚本计算并写入新文档 `<html data-nav>`。
+- 水平位移 `3rem`、垂直 `2rem`，时长旧页 `0.4s` / 新页 `0.5s + 0.1s delay`，缓动 `--ease-spring`。
+- 旧/新页各自以 `forwards` / `backwards` 同动画方向呈现（历史前进/后退不做方向反转）。
+
+> 动效一律尊重 `prefers-reduced-motion`：开启时所有 view-transition 动画以 `animation: none !important` 全局禁用，仅保留无动画的内容交换；颜色过渡仍保留。
+
+---
+
+## 7. 灵感库（未落地愿景）
+
+> 以下内容曾作为「当前规格」写在正文中，但**尚未在代码里落地**。它们保留为设计灵感与后续方向；在真正实现前，不构成当前规格，亦勿将其引用为已实现。落地任何一项后，应把对应条目从本节移回正文对应章节。
+
+### 7.1 字号刻度（1.2 模数）
+> 当前未定义这些 token，字号直接写 `rem`/`clamp`。落地时可在 `@theme` 补充。
+
+| Token | 值 | 典型用途 |
+| --- | --- | --- |
+| `--text-xs` | `0.75rem` | 元信息、标签 |
+| `--text-sm` | `0.875rem` | 次要文字、卡片 meta |
+| `--text-base` | `1rem` | 正文 |
+| `--text-lg` | `1.125rem` | 引导文字 |
+| `--text-xl` | `1.375rem` | 卡片标题、h3 |
+| `--text-2xl` | `1.75rem` | h2 |
+| `--text-3xl` | `2.25rem` | 页面标题 |
+| `--text-4xl` | `clamp(2rem, 5vw, 3rem)` | hero h1 |
+| `--text-display` | `clamp(3rem, 8vw, 4.5rem)` | hero 装饰大字（可叠手写体） |
+
+### 7.2 重拟物细节（点阵纸 / 和纸胶带 / 折角 / 微旋转）
+> 当前背景为实现方格纸（见 4.3），胶带、折角、微旋转均未在组件落地。
+
+- **点阵纸背景**：`--canvas` 上叠加极低透明度点阵（`radial-gradient` 圆点，间距 `1.25rem`，颜色 `--text` @ 4%），营造笔记本纸。
+- **和纸胶带 (washi tape)**：特色卡片左/右上角用 `::before` 画一段 6–8rem 宽、1rem 高的半透明贴纸色条带，旋转 `-4° ~ 4°`，`opacity: 0.7`，边缘可加轻微锯齿（`mask` 或 `clip-path` 内凹三角）。
+- **折角**：featured 卡片右下角用 `clip-path` 或双层 `::after` 做小三角折角，露出 `--surface-sunk`。
+- **卡片微旋转**：在「剪贴簿」式区块（如首页 recent posts 的第一张）允许 `transform: rotate(-0.8deg ~ 1.2deg)`，制造手贴感；**正文区/表格不旋转**。
+
+### 7.3 便签 Sticky note
+> 组件尚未存在。
+
+| 组件 | 规格 |
+| --- | --- |
+| **便签 Sticky note** | 卡片变体；`--radius-md` 偏小、顶部贴和纸胶带、轻微旋转、用贴纸色作底 |
+
+### 7.4 进入动画（可选）
+> 未启用；如需入场动效，参考此参数。
+
+| 场景 | 值 |
+| --- | --- |
+| 进入动画 | 卡片 `fade + translateY(8px)`，`0.4s --ease-spring`，错峰 `delay` |
 
 ---
