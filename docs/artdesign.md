@@ -42,7 +42,7 @@
 | --- | --- | --- | --- |
 | `--canvas` | `#FAF5EC` | 纸面 / 页面底色 | `<body>` 背景 |
 | `--surface` | `#FFFFFF` | 卡片面 | 卡片、浮层、便签 |
-| `--surface-2` | `#F3ECE0` | 内陷面 / 凹槽 | 代码块底、嵌套区、输入框 |
+| `--surface-sunk` | `#F3ECE0` | 内陷面 / 凹槽 | 代码块底、嵌套区、输入框 |
 | `--surface-hover` | `#F6F0E5` | 卡片悬停 | 列表项 hover |
 | `--text` | `#322B23` | 主墨色 | 正文、标题 |
 | `--text-muted` | `#6A5F52` | 次墨色 | 描述、次要文字 |
@@ -55,13 +55,13 @@
 | `--border-strong` | `#D8C9AE` | 强纸边 | 强调分隔、hover 描边 |
 
 ### 2.3 暗色板（Dark · 夜读牛皮）
-> 页面底色取近黑（`#121212`），但卡片、墨色、纸边仍保留暖棕调——黑底暖纸，像夜里摊开的深色牛皮手账。强调色提亮以保证对比度。
+> 页面底色取近黑，但卡片、墨色、纸边仍保留暖棕调——黑底暖纸，像夜里摊开的深色牛皮手账。强调色提亮以保证对比度。
 
 | Token (`.dark`) | 值 | 语义 |
 | --- | --- | --- |
-| `--canvas` | `#121212` | 夜纸面（近黑） |
-| `--surface` | `#1E1A16` | 卡片面（抬起，暖纸） |
-| `--surface-2` | `#171410` | 内陷面 |
+| `--canvas` | `#141311` | 夜纸面（近黑） |
+| `--surface` | `#1F1C1A` | 卡片面（抬起，暖纸） |
+| `--surface-sunk` | `#080400` | 内陷面 |
 | `--surface-hover` | `#2A231D` | 卡片悬停 |
 | `--text` | `#F0E8DC` | 羊皮纸墨色 |
 | `--text-muted` | `#B3A695` | 次墨色 |
@@ -149,7 +149,6 @@
 
 | Token | 明色值（暗色用 `rgba(0,0,0,.x)` 加深） | 层级 |
 | --- | --- | --- |
-| `--shadow-flat` | `0 1px 0 rgba(120,90,50,0.06)` | 平贴（分割/纸边） |
 | `--shadow-sticky` | `0 2px 4px rgba(120,90,50,0.10), 0 1px 1px rgba(120,90,50,0.08)` | 便签（轻浮起） |
 | `--shadow-card` | `0 4px 12px rgba(120,90,50,0.10), 0 2px 4px rgba(120,90,50,0.08)` | 标准卡片 |
 | `--shadow-float` | `0 12px 28px rgba(120,90,50,0.16), 0 4px 8px rgba(120,90,50,0.10)` | 悬浮/悬停态 |
@@ -158,7 +157,7 @@
 ### 4.3 纸张与胶带质感（拟物细节）
 - **点阵纸背景**：`--canvas` 上叠加极低透明度点阵（`radial-gradient` 圆点，间距 `1.25rem`，颜色 `--text` @ 4%），营造笔记本纸。
 - **和纸胶带 (washi tape)**：特色卡片左/右上角用 `::before` 画一段 6–8rem 宽、1rem 高的半透明贴纸色条带，旋转 `-4° ~ 4°`，`opacity: 0.7`，边缘可加轻微锯齿（`mask` 或 `clip-path` 内凹三角）。
-- **折角**：featured 卡片右下角用 `clip-path` 或双层 `::after` 做小三角折角，露出 `--surface-2`。
+- **折角**：featured 卡片右下角用 `clip-path` 或双层 `::after` 做小三角折角，露出 `--surface-sunk`。
 - **缝线/虚线分隔**：列表分隔、TOC 边线优先用 `border-style: dashed` + `--border`，呼应笔记本分隔线。
 - **卡片微旋转**：在「剪贴簿」式区块（如首页 recent posts 的第一张）允许 `transform: rotate(-0.8deg ~ 1.2deg)`，制造手贴感；**正文区/表格不旋转**。
 
@@ -182,12 +181,12 @@
 | **按钮 Primary** | `--accent` 底 · `--accent-contrast` 字 · `--radius-md` · `--shadow-sticky` · hover `--accent-strong` · active `--shadow-press` |
 | **按钮 Ghost** | 透明底 · `--border` 描边 · hover `--surface-hover` |
 | **链接** | 正文链接 `--accent` + 下划线偏移 `0.15em` |
-| **代码块** | `--surface-2` 底 · `--radius-lg` · `--shadow-flat` · `--font-mono` |
+| **代码块** | `--surface-sunk` 底 · `--radius-lg` · `--shadow-press` · `--font-mono` |
 | **日期戳** | 手写体 `--font-display` + `--text-subtle`，呼应手账记日期 |
 | **空状态** | 一句手写体问候 + 小贴纸插画位 |
 | **TOC 侧栏** | `border-left: dashed --border`，激活项 `--accent` + 实线左条 |
-| **顶栏 Header** | `position:sticky;top:0;z-index:50` · `bg:--canvas`（**实色不透明，非毛玻璃**） · `border-bottom:1px --border` · `--shadow-flat` · 内层 `max-width:--container-page`·`min-height:3.75rem`·两端对齐 `px-1.25rem py-0.75rem` · 品牌字 `--font-display`+`--accent` 标记 · 导航项 `--radius-md`·`--text-muted`·hover/active→`--text`+`--surface-hover` |
-| **搜索框 Search** | 图标按钮触发（同 ThemeToggle 样式：`--radius-md`·`--border`·hover `--surface-hover`） · 点击弹出浮窗 `role="dialog"`：`bg:--surface`·`--radius-2xl`·`--shadow-float`·`max-width 36rem` · 内含输入框 `bg:--surface-2`（内陷面）·`--radius-md`·focus 环 `--accent-soft` + 实时结果列表 · 命中高亮 `<mark>` 用 `--accent-soft` 底 + `--accent-strong` 字 · 无结果 / 索引不可用（如 dev）有空态文案 · Esc / 背景点击关闭 · 打开时锁定 body 滚动 |
+| **顶栏 Header** | `position:sticky;top:0;z-index:50` · `bg:--canvas`（**实色不透明，非毛玻璃**） · `border-bottom:1px --border` · `--shadow-sticky` · 内层 `max-width:--container-page`·`min-height:3.75rem`·两端对齐 `px-1.25rem py-0.75rem` · 品牌字 `--font-display`+`--accent` 标记 · 导航项 `--radius-md`·`--text-muted`·hover/active→`--text`+`--surface-hover` |
+| **搜索框 Search** | 图标按钮触发（同 ThemeToggle 样式：`--radius-md`·`--border`·hover `--surface-hover`） · 点击弹出浮窗 `role="dialog"`：`bg:--surface`·`--radius-2xl`·`--shadow-float`·`max-width 36rem` · 内含输入框 `bg:--surface-sunk`（内陷面）·`--radius-md`·focus 环 `--accent-soft` + 实时结果列表 · 命中高亮 `<mark>` 用 `--accent-soft` 底 + `--accent-strong` 字 · 无结果 / 索引不可用（如 dev）有空态文案 · Esc / 背景点击关闭 · 打开时锁定 body 滚动 |
 
 ### 5.3 列表 / 网格
 - 卡片网格沿用 `repeat(auto-fill, minmax(20rem,1fr))`。
@@ -208,146 +207,3 @@
 > 动效一律尊重 `prefers-reduced-motion`：开启时禁用旋转与位移，仅保留颜色过渡。
 
 ---
-
-## 7. 落地映射（可直接粘贴进 `global.css`）
-
-> 以下块**替换**现有 `@theme`、`@theme inline`、`:root`、`.dark` 中对应部分。新增 token 已标注。字体与贴纸色通过 `@theme` 暴露给 Tailwind 工具类（如 `font-display`、`text-mint`）。
-
-### 7.1 `@theme`（静态：字体 / 圆角 / 阴影 / 动效 / 容器）
-```css
-@theme {
-  /* 字体 */
-  --font-sans: "Nunito", "PingFang SC", "Noto Sans SC", system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji";
-  --font-display: "Caveat", "Ma Shan Zheng", cursive;     /* 新增：手写体 */
-  --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", Menlo, monospace;
-
-  /* 圆角（整体上调） */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.9rem;
-  --radius-lg: 1.25rem;
-  --radius-xl: 1.75rem;
-  --radius-2xl: 2.25rem;
-  --radius-pill: 999px;                                    /* 新增 */
-
-  /* 阴影层次（暖棕基底，拟物多层） */
-  --shadow-flat:   0 1px 0 rgba(120, 90, 50, 0.06);
-  --shadow-sticky: 0 2px 4px rgba(120, 90, 50, 0.10), 0 1px 1px rgba(120, 90, 50, 0.08);
-  --shadow-card:   0 4px 12px rgba(120, 90, 50, 0.10), 0 2px 4px rgba(120, 90, 50, 0.08);
-  --shadow-float:  0 12px 28px rgba(120, 90, 50, 0.16), 0 4px 8px rgba(120, 90, 50, 0.10);
-  --shadow-press:  inset 0 1px 3px rgba(120, 90, 50, 0.14);
-
-  /* 动效 */
-  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);        /* 新增 */
-
-  /* 容器宽度（沿用既有） */
-  --container-page: 72rem;
-  --container-article: 64rem;
-  --container-prose: 44rem;
-}
-```
-
-### 7.2 `@theme inline`（语义色别名 + 贴纸色）
-```css
-@theme inline {
-  --color-canvas: var(--canvas);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);     /* 新增 */
-  --color-surface-hover: var(--surface-hover);
-
-  --color-text: var(--text);
-  --color-muted: var(--text-muted);
-  --color-subtle: var(--text-subtle);
-
-  --color-accent: var(--accent);
-  --color-accent-strong: var(--accent-strong);
-  --color-accent-contrast: var(--accent-contrast);
-  --color-accent-soft: var(--accent-soft); /* 新增 */
-
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
-
-  /* 贴纸色（新增，跨主题稳定名称） */
-  --color-mint: var(--c-mint);
-  --color-sky: var(--c-sky);
-  --color-lemon: var(--c-lemon);
-  --color-grape: var(--c-grape);
-  --color-peach: var(--c-peach);
-  --color-berry: var(--c-berry);
-}
-```
-
-### 7.3 `:root`（明色 · 奶油纸）
-```css
-:root {
-  --canvas: #FAF5EC;
-  --surface: #FFFFFF;
-  --surface-2: #F3ECE0;
-  --surface-hover: #F6F0E5;
-
-  --text: #322B23;
-  --text-muted: #6A5F52;
-  --text-subtle: #A89B8B;
-
-  --accent: #FF6B8D;
-  --accent-strong: #F24E73;
-  --accent-contrast: #FFFFFF;
-  --accent-soft: rgba(255, 107, 141, 0.14);
-
-  --border: #EADFCB;
-  --border-strong: #D8C9AE;
-
-  --c-mint: #34C9A3;
-  --c-sky: #4DA9E6;
-  --c-lemon: #F5C24B;
-  --c-grape: #A982E8;
-  --c-peach: #FF9C73;
-  --c-berry: #E85A8C;
-
-  color-scheme: light;
-}
-```
-
-### 7.4 `.dark`（暗色 · 夜读牛皮）
-```css
-.dark {
-  --canvas: #121212;
-  --surface: #1E1A16;
-  --surface-2: #171410;
-  --surface-hover: #2A231D;
-
-  --text: #F0E8DC;
-  --text-muted: #B3A695;
-  --text-subtle: #847666;
-
-  --accent: #FF8FAB;
-  --accent-strong: #FFADC2;
-  --accent-contrast: #3D1521;
-  --accent-soft: rgba(255, 143, 171, 0.16);
-
-  --border: #38302A;
-  --border-strong: #4A3F37;
-
-  /* 贴纸色暗色板（提亮 10–15%） */
-  --c-mint: #5FDDB6;
-  --c-sky: #74C0F0;
-  --c-lemon: #FFD27A;
-  --c-grape: #C2A4F2;
-  --c-peach: #FFB595;
-  --c-berry: #F47FA6;
-
-  color-scheme: dark;
-}
-```
-
-### 7.5 暗色阴影覆盖（暖棕在暗底会发灰，单独加深）
-```css
-.dark {
-  --shadow-flat:   0 1px 0 rgba(0, 0, 0, 0.30);
-  --shadow-sticky: 0 2px 4px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(0, 0, 0, 0.30);
-  --shadow-card:   0 4px 12px rgba(0, 0, 0, 0.40), 0 2px 4px rgba(0, 0, 0, 0.32);
-  --shadow-float:  0 12px 28px rgba(0, 0, 0, 0.50), 0 4px 8px rgba(0, 0, 0, 0.36);
-  --shadow-press:  inset 0 1px 3px rgba(0, 0, 0, 0.40);
-}
-```

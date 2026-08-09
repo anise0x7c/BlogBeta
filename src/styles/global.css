@@ -7,9 +7,8 @@
   --font-sans: "Nunito", "PingFang SC", "Noto Sans SC", system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
   --font-display: "Caveat", "Ma Shan Zheng", cursive;
-  --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", "SF Mono", Menlo,
-    Consolas, "Liberation Mono", monospace;
-  
+  --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
   /* rounded corners */
   --radius-sm: 0.5rem;
   --radius-md: 0.9rem;
@@ -19,14 +18,16 @@
   --radius-pill: 999px;
 
   /* shadows */
-  --shadow-flat: 0 1px 0 rgba(120, 90, 50, 0.06);
-  --shadow-sticky: 0 2px 4px rgba(120, 90, 50, 0.1),
-    0 1px 1px rgba(120, 90, 50, 0.08);
-  --shadow-card: 0 4px 12px rgba(120, 90, 50, 0.1),
+  --shadow-sticky:
+    0 2px 4px rgba(120, 90, 50, 0.35),
+    0 1px 1px rgba(120, 90, 50, 0.03);
+  --shadow-card:
+    0 4px 12px rgba(120, 90, 50, 0.1),
     0 2px 4px rgba(120, 90, 50, 0.08);
-  --shadow-float: 0 12px 28px rgba(120, 90, 50, 0.16),
+  --shadow-float:
+    0 12px 28px rgba(120, 90, 50, 0.16),
     0 4px 8px rgba(120, 90, 50, 0.1);
-  --shadow-press: inset 0 1px 3px rgba(120, 90, 50, 0.14);
+  --shadow-press: inset 0 2px 3px rgba(120, 90, 50, 0.2);
 
   /* motion */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -67,7 +68,7 @@
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
+  --color-surface-sunk: var(--surface-sunk);
   --color-surface-hover: var(--surface-hover);
 
   --color-text: var(--text);
@@ -90,11 +91,11 @@
   --color-berry: var(--c-berry);
 }
 
-/* ----- Light theme · 奶油纸 (cream paper) ----- */
+/* ----- Light theme 奶油纸 (cream paper) ----- */
 :root {
   --canvas: #faf5ec;
   --surface: #ffffff;
-  --surface-2: #f3ece0;
+  --surface-sunk: #f3ece0;
   --surface-hover: #f6f0e5;
 
   --text: #322b23;
@@ -119,11 +120,11 @@
   color-scheme: light;
 }
 
-/* ----- Dark theme · 夜读牛皮 (night kraft) ----- */
+/* ----- Dark theme 深棕纸 (brown paper) ----- */
 .dark {
-  --canvas: #121212;
-  --surface: #1e1a16;
-  --surface-2: #171410;
+  --canvas: #141311;
+  --surface: #1f1c1a;
+  --surface-sunk: #100f0f;
   --surface-hover: #2a231d;
 
   --text: #f0e8dc;
@@ -146,13 +147,47 @@
   --c-berry: #f47fa6;
 
   /* Warm-brown shadows go grey on dark; deepen them with neutral black. */
-  --shadow-flat: 0 1px 0 rgba(0, 0, 0, 0.3);
   --shadow-sticky: 0 2px 4px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(0, 0, 0, 0.3);
   --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.32);
   --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.36);
-  --shadow-press: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-press: inset 0 2px 3px rgba(0, 0, 0, 0.5);
 
   color-scheme: dark;
+}
+
+/* =========================================================================
+   Page-transition keyframes (used by <ClientRouter /> on <main>)
+   Plain top-level @keyframes so they are always emitted regardless of usage.
+   ========================================================================= */
+@keyframes vt-page-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect reduced-motion: skip the animation entirely but still allow the
+   client-side swap. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 /* =========================================================================
@@ -249,13 +284,13 @@
   .prose code {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    background: var(--color-surface-2);
+    background: var(--color-surface-sunk);
     padding: 0.15em 0.4em;
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
   }
   .prose pre {
-    background: var(--color-surface-2);
+    background: var(--color-surface-sunk);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 1rem 1.25rem;
@@ -332,25 +367,5 @@
     border-radius: var(--radius-pill);
     color: var(--tag-color, var(--color-accent));
     background: color-mix(in srgb, var(--tag-color, var(--color-accent)) 16%, transparent);
-  }
-
-  /* Washi-tape strip for featured cards. Place as ::before on a container
-     with `class="washi-tape"`. Colour set via --tag-color. */
-  .washi-tape::before {
-    content: "";
-    position: absolute;
-    top: -0.6rem;
-    left: 1.5rem;
-    width: 5.5rem;
-    height: 1.1rem;
-    background: color-mix(in srgb, var(--tag-color, var(--color-accent)) 65%, transparent);
-    transform: rotate(-4deg);
-    border-radius: 0.1rem;
-    box-shadow: 0 1px 2px rgba(120, 90, 50, 0.12);
-    /* torn ends via uneven mask */
-    -webkit-mask: linear-gradient(90deg, #000 88%, transparent 88%) 0 0 / 0.4rem
-      100% repeat-x;
-    mask: linear-gradient(90deg, #000 88%, transparent 88%) 0 0 / 0.4rem 100%
-      repeat-x;
   }
 }

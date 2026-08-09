@@ -77,12 +77,17 @@ const hasToc = tocItems.length > 0;
 </BaseLayout>
 
 <script>
-  const toc = document.querySelector<HTMLElement>(".toc");
-  if (toc) {
+  // Re-run on every client-side navigation (also fires on first load) so the
+  // TOC observer is attached to the freshly swapped document.
+  const setupToc = () => {
+    const toc = document.querySelector<HTMLElement>(".toc");
+    if (!toc) return;
     const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("a"));
     const linkMap = new Map<Element, HTMLAnchorElement>();
     for (const link of links) {
-      const id = decodeURIComponent((link.getAttribute("href") ?? "").slice(1));
+      const id = decodeURIComponent(
+        (link.getAttribute("href") ?? "").slice(1),
+      );
       const target = document.getElementById(id);
       if (target) linkMap.set(target, link);
     }
@@ -107,7 +112,8 @@ const hasToc = tocItems.length > 0;
       { rootMargin: "-90px 0px -70% 0px", threshold: 0 },
     );
     for (const target of targets) observer.observe(target);
-  }
+  };
+  document.addEventListener("astro:page-load", setupToc);
 </script>
 
 <style>

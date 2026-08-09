@@ -1,0 +1,50 @@
+---
+interface Props {
+  variant?: "solid" | "outline";
+  iconOnly?: boolean;
+  href?: string;
+  type?: "button" | "submit";
+  title?: string;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const {
+  variant = "outline",
+  iconOnly = false,
+  href,
+  type = "button",
+  title,
+  ariaLabel,
+  class: extra = "",
+  ...rest
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center cursor-pointer rounded-md transition-colors duration-200";
+
+const variants = {
+  solid:
+    "border border-accent bg-accent text-accent-contrast hover:bg-accent-strong",
+  outline:
+    "border border-border bg-transparent text-muted hover:border-border-strong hover:bg-surface-hover hover:text-text",
+};
+
+const size = iconOnly ? "h-9 w-9" : "gap-2 px-4 py-2 text-sm font-medium";
+
+const classes = [base, variants[variant], size, extra].join(" ");
+---
+
+{
+  href ? (
+    <a href={href} class={classes} title={title} aria-label={ariaLabel} {...rest}>
+      <slot name="icon" />
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes} title={title} aria-label={ariaLabel} {...rest}>
+      <slot name="icon" />
+      <slot />
+    </button>
+  )
+}

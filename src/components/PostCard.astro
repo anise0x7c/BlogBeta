@@ -5,17 +5,16 @@ import FormattedDate from "./FormattedDate.astro";
 
 interface Props {
   post: Post;
-  featured?: boolean;
 }
 
-const { post, featured = false } = Astro.props;
+const { post } = Astro.props;
 const { title, description, pubDate, tags } = post.data;
 const firstTag = tags[0];
 const tagColor = firstTag ? stickerColor(firstTag) : undefined;
 ---
 
 <a
-  class:list={["card", { featured, "washi-tape": featured }]}
+  class="card"
   href={`/blogs/${post.id}`}
   style={tagColor ? `--tag-color: ${tagColor}` : undefined}
 >
@@ -60,15 +59,6 @@ const tagColor = firstTag ? stickerColor(firstTag) : undefined;
   .card:active {
     transform: translateY(-1px);
     box-shadow: var(--shadow-press);
-  }
-
-  /* Featured card: scrapbook tilt + washi-tape strip (via global utility). */
-  .featured {
-    transform: rotate(-0.8deg);
-  }
-
-  .featured:hover {
-    transform: rotate(-0.8deg) translateY(-3px);
   }
 
   .card-meta {

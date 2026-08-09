@@ -28,9 +28,9 @@ const recent = await getRecentPosts(3);
           <a href="/blogs">View all &rarr;</a>
         </header>
         <ul class="card-list">
-          {recent.map((post, i) => (
+          {recent.map((post) => (
             <li>
-              <PostCard post={post} featured={i === 0} />
+              <PostCard post={post} />
             </li>
           ))}
         </ul>
@@ -127,7 +127,6 @@ const recent = await getRecentPosts(3);
   .btn.ghost {
     color: var(--color-text);
     border-color: var(--color-border);
-    box-shadow: var(--shadow-flat);
   }
 
   .btn.ghost:hover {
@@ -164,7 +163,7 @@ const recent = await getRecentPosts(3);
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 1rem;
+    gap: 1.5rem;
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   }
 </style>

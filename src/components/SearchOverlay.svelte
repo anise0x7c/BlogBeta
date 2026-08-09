@@ -18,7 +18,6 @@
   let loaded = false;
   let debounceId: ReturnType<typeof setTimeout> | null = null;
   let inputEl = $state<HTMLInputElement | undefined>(undefined);
-  let triggerBtn = $state<HTMLButtonElement | undefined>(undefined);
 
   async function loadPagefind() {
     if (loaded) return;
@@ -46,12 +45,13 @@
       const search = await pagefind.search(trimmed);
       const top = search.results.slice(0, 6);
       const data = await Promise.all(top.map((r: any) => r.data()));
-      results = data.map((d: any) => ({
-        title: d.meta?.title ?? d.url,
-        url: d.url,
-        excerpt: d.excerpt ?? "",
-      }))
-      .filter((r) => r.url.startsWith("/blogs/"));
+      results = data
+        .map((d: any) => ({
+          title: d.meta?.title ?? d.url,
+          url: d.url,
+          excerpt: d.excerpt ?? "",
+        }))
+        .filter((r: SearchResult) => r.url.startsWith("/blogs/"));
       activeIndex = results.length > 0 ? 0 : -1;
     } catch {
       results = [];
@@ -105,7 +105,7 @@
     query = "";
     results = [];
     activeIndex = -1;
-    triggerBtn?.focus();
+    document.querySelector<HTMLElement>("[data-search-trigger]")?.focus();
   }
 
   function onOverlayBackdrop(e: MouseEvent) {
@@ -115,98 +115,81 @@
   function onOverlayKeydown(e: KeyboardEvent) {
     if (e.key === "Escape") closeOverlay();
   }
+
+  $effect(() => {
+    const trigger = document.querySelector<HTMLElement>("[data-search-trigger]");
+    if (!trigger) return;
+    trigger.addEventListener("click", openOverlay);
+    return () => trigger.removeEventListener("click", openOverlay);
+  });
+
+  $effect(() => {
+    const trigger = document.querySelector<HTMLElement>("[data-search-trigger]");
+    if (trigger) trigger.setAttribute("aria-expanded", String(open));
+  });
 </script>
 
-<div class="inline-flex items-center">
-  <button
-    type="button"
-    bind:this={triggerBtn}
-    class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-transparent text-muted transition-colors duration-200 hover:border-border-strong hover:bg-surface-hover hover:text-text"
-    onclick={openOverlay}
+{#if open}
+  <div
+    class="fixed inset-0 z-100 flex justify-center bg-black/50 animate-fade-in motion-reduce:animate-none"
+    onclick={onOverlayBackdrop}
+    onkeydown={onOverlayKeydown}
+    role="dialog"
+    aria-modal="true"
     aria-label="Search"
-    aria-haspopup="dialog"
-    aria-expanded={open}
-    title="Search"
+    tabindex="-1"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  </button>
-
-  {#if open}
     <div
-      class="fixed inset-0 z-100 flex justify-center bg-black/50 animate-fade-in motion-reduce:animate-none"
-      onclick={onOverlayBackdrop}
-      onkeydown={onOverlayKeydown}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Search"
-      tabindex="-1"
+      class="relative mt-[clamp(4rem,10vh,7rem)] mb-4 flex max-h-[calc(100vh-clamp(4rem,10vh,7rem)-1rem)] w-[calc(100%-2rem)] max-w-xl flex-col overflow-hidden rounded-lg border border-border bg-surface shadow-float animate-modal-in motion-reduce:animate-none"
     >
-      <div
-        class="relative mt-[clamp(4rem,10vh,7rem)] mb-4 flex max-h-[calc(100vh-clamp(4rem,10vh,7rem)-1rem)] w-[calc(100%-2rem)] max-w-xl flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-float animate-modal-in motion-reduce:animate-none"
-      >
-        <div class="flex items-center gap-2 border-b border-border px-5 py-4">
-          <input
-            bind:this={inputEl}
-            type="search"
-            class="flex-1 rounded-md border border-border bg-surface-2 px-[0.85rem] py-[0.55rem] font-sans text-base text-text outline-none placeholder:text-subtle focus:border-accent focus:[box-shadow:0_0_0_3px_var(--color-accent-soft)]"
-            placeholder="Search…"
-            aria-label="Search the site"
-            role="combobox"
-            aria-expanded={results.length > 0}
-            aria-controls="search-results"
-            aria-activedescendant={activeIndex >= 0
-              ? `search-result-${activeIndex}`
-              : undefined}
-            autocomplete="off"
-            spellcheck="false"
-            bind:value={query}
-            oninput={onInput}
-            onkeydown={onKeydown}
-          />
-          <button
-            type="button"
-            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border bg-transparent text-muted transition-colors duration-200 hover:border-border-strong hover:bg-surface-hover hover:text-text"
-            onclick={closeOverlay}
-            aria-label="Close search"
+      <div class="flex items-center gap-2 border-b border-border px-5 py-4">
+        <input
+          bind:this={inputEl}
+          type="search"
+          class="flex-1 rounded-md border border-border bg-surface-2 px-[0.85rem] py-[0.55rem] font-sans text-base text-text outline-none placeholder:text-subtle focus:border-accent focus:[box-shadow:0_0_0_3px_var(--color-accent-soft)]"
+          placeholder="Search…"
+          aria-label="Search the site"
+          role="combobox"
+          aria-expanded={results.length > 0}
+          aria-controls="search-results"
+          aria-activedescendant={activeIndex >= 0
+            ? `search-result-${activeIndex}`
+            : undefined}
+          autocomplete="off"
+          spellcheck="false"
+          bind:value={query}
+          oninput={onInput}
+          onkeydown={onKeydown}
+        />
+        <button
+          type="button"
+          class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border bg-transparent text-muted transition-colors duration-200 hover:border-border-strong hover:bg-surface-hover hover:text-text"
+          onclick={closeOverlay}
+          aria-label="Close search"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M18 6 6 18" />
-              <path d="M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <div class="flex-1 overflow-y-auto p-2">
-          {@render resultsContent()}
-        </div>
+            <path d="M18 6 6 18" />
+            <path d="M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-2">
+        {@render resultsContent()}
       </div>
     </div>
-  {/if}
-</div>
+  </div>
+{/if}
 
 {#snippet resultsContent()}
   {#if loading}
