@@ -156,8 +156,15 @@
 }
 
 /* =========================================================================
-   Page-transition keyframes (used by <ClientRouter /> on <main>)
+   Page-transition keyframes & rules (used by <ClientRouter /> on <main>)
    Plain top-level @keyframes so they are always emitted regardless of usage.
+
+   <main> carries `transition:name="content"`; the scripts sets
+   `html[data-nav="drill"|"back"|"sibling"]` on each navigation and CSS picks
+   the matching animation:
+     - drill    (going deeper)   new slides in from the right, old out left
+     - back     (going up)       new slides in from the left, old out right
+     - sibling  (same depth)     soft vertical fade (default)
    ========================================================================= */
 @keyframes vt-page-out {
   from {
@@ -166,14 +173,14 @@
   }
   to {
     opacity: 0;
-    transform: translateY(0.5rem);
+    transform: translateY(2rem);
   }
 }
 
 @keyframes vt-page-in {
   from {
     opacity: 0;
-    transform: translateY(-0.5rem);
+    transform: translateY(-2rem);
   }
   to {
     opacity: 1;
@@ -181,8 +188,76 @@
   }
 }
 
+@keyframes vt-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-3rem);
+  }
+}
+
+@keyframes vt-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes vt-out-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+}
+
+@keyframes vt-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Default / sibling: soft vertical fade (also the no-marker fallback). */
+::view-transition-old(content) {
+  animation: vt-page-out 0.4s var(--ease-spring) both;
+}
+::view-transition-new(content) {
+  animation: vt-page-in 0.5s var(--ease-spring) 0.1s both;
+}
+
+/* drill: new page slides in from the right, old out to the left. */
+html[data-nav="drill"]::view-transition-old(content) {
+  animation: vt-out-left 0.4s var(--ease-spring) both;
+}
+html[data-nav="drill"]::view-transition-new(content) {
+  animation: vt-in-right 0.5s var(--ease-spring) 0.1s both;
+}
+
+/* back: new page slides in from the left, old out to the right. */
+html[data-nav="back"]::view-transition-old(content) {
+  animation: vt-out-right 0.4s var(--ease-spring) both;
+}
+html[data-nav="back"]::view-transition-new(content) {
+  animation: vt-in-left 0.5s var(--ease-spring) 0.1s both;
+}
+
 /* Respect reduced-motion: skip the animation entirely but still allow the
-   client-side swap. */
+   client-side swap. `!important` wins over every data-nav variant above. */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(*),
   ::view-transition-new(*) {

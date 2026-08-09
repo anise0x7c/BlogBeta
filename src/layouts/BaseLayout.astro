@@ -16,30 +16,6 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
-
-// Gentle fade + rise for <main>. Only the content area animates; <html> uses
-// `none` so the sticky Header/Footer stay perfectly static between pages.
-const easeSpring = "cubic-bezier(0.16, 1, 0.3, 1)";
-const pageTransition = {
-  forwards: {
-    old: { name: "vt-page-out", duration: "0.22s", easing: easeSpring },
-    new: {
-      name: "vt-page-in",
-      duration: "0.3s",
-      easing: easeSpring,
-      delay: "0.06s",
-    },
-  },
-  backwards: {
-    old: { name: "vt-page-out", duration: "0.22s", easing: easeSpring },
-    new: {
-      name: "vt-page-in",
-      duration: "0.3s",
-      easing: easeSpring,
-      delay: "0.06s",
-    },
-  },
-};
 ---
 
 <!doctype html>
@@ -97,12 +73,34 @@ const pageTransition = {
   </head>
   <body>
     <Header />
-    <main transition:animate={pageTransition}>
+    <main transition:name="content">
       <slot />
     </main>
     <Footer />
   </body>
 </html>
+
+<script>
+  import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
+
+  // Context-aware page transitions: classify each navigation by route depth and
+  // tag the incoming <html> with data-nav so CSS picks drill/back/sibling
+  // animations. Bundled scripts run once; the listener stays alive across swaps.
+  const depth = (path: string): number => {
+    if (path === "/") return 0;
+    if (path === "/blogs") return 1;
+    if (path.startsWith("/blogs/")) return 2;
+    return path.split("/").filter(Boolean).length;
+  };
+
+  document.addEventListener("astro:before-swap", (event) => {
+    const e = event as TransitionBeforeSwapEvent;
+    const fd = depth(e.from.pathname);
+    const td = depth(e.to.pathname);
+    const nav = td > fd ? "drill" : td < fd ? "back" : "sibling";
+    e.newDocument.documentElement.dataset.nav = nav;
+  });
+</script>
 
 <style is:global>
   main {
