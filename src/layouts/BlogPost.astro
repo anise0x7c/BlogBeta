@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
+import { Image } from "astro:assets";
 import type { Post } from "../utils/posts";
 import { stickerColor } from "../utils/color";
 import BaseLayout from "./BaseLayout.astro";
@@ -11,14 +12,25 @@ interface Props {
 }
 
 const { post, headings = [] } = Astro.props;
-const { title, description, pubDate, updatedDate, tags } = post.data;
+const { title, description, pubDate, updatedDate, tags, cover, coverAlt } = post.data;
 const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const hasToc = tocItems.length > 0;
 ---
 
 <BaseLayout title={title} description={description}>
-  <article class="post" class:list={{ "has-toc": hasToc }}>
+  <article
+    class="post"
+    class:list={{ "has-toc": hasToc }}
+    data-pagefind-filter="collection:blog"
+  >
     <header class="post-header">
+      {
+        cover && (
+          <div class="post-cover">
+            <Image src={cover} alt={coverAlt ?? ""} width={1200} height={675} />
+          </div>
+        )
+      }
       <div class="meta-row">
         <span class="date">
           <FormattedDate date={pubDate} />
@@ -133,6 +145,20 @@ const hasToc = tocItems.length > 0;
 
   .post-header {
     margin-bottom: 2.5rem;
+  }
+
+  .post-cover {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.5rem;
+  }
+
+  .post-cover :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .meta-row {

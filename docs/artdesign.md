@@ -162,8 +162,8 @@
 | --- | --- |
 | **卡片 Card** | `bg:--surface` · `border:1px --border` · `--radius-lg` · `--shadow-card` · hover→`--shadow-float`+`translateY(-3px)` |
 | **标签 Chip** | `--radius-pill` · `--accent-soft` 底 + `--accent` 字；分类标签按贴纸色着色（每类一色） |
-| **按钮 Primary** | `--accent` 底 · `--accent-contrast` 字 · `--radius-md` · `--shadow-sticky` · hover `--accent-strong` · active `--shadow-press` |
-| **按钮 Ghost** | 透明底 · `--border` 描边 · hover `--surface-hover` |
+| **按钮 Primary** | `--accent` 底 · `--accent-contrast` 字 · `--radius-md` · `--shadow-card` · hover 抬升 `translateY(-3px)` + `--shadow-float` + `--accent-strong` · active 回位 · 复用 `.lift` |
+| **按钮 Ghost** | 透明底 · `--border` 描边 · hover `--surface-hover` · 同享 `.lift` 抬升 |
 | **链接** | 正文链接 `--accent` + 下划线偏移 `0.18em` |
 | **代码块** | `--surface-sunk` 底 · `--radius-lg` · `--shadow-press` · `--font-mono` |
 | **日期戳** | 手写体 `--font-display` + `--text-subtle`，呼应手账记日期 |
@@ -186,7 +186,7 @@
 | `--ease-bounce` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | 卡片 hover / 弹入（俏皮回弹） |
 | `--animate-fade-in` | `fade-in 0.2s var(--ease-spring)` | 搜索浮层遮罩淡入 |
 | `--animate-modal-in` | `modal-in 0.25s var(--ease-bounce)` | 搜索浮窗弹入（上移+缩放） |
-| 卡片 hover | `transform: translateY(-3px)` + `--shadow-float`，时长 `0.2s --ease-bounce` | PostCard 实现 |
+| 交互元素 hover（卡片 / 按钮） | `translateY(-3px)` + 阴影升级，复用 `.lift` 工具类：几何 `0.4s --ease-bounce`、颜色 `0.25s --ease-spring` · active 回位 | PostCard + ThemedButton 实现 |
 | 主题切换 | `background/color 0.25s --ease-spring` | body 配色过渡 |
 
 ### 6.1 页面过渡动画（ClientRouter · 上下文感知）

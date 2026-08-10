@@ -1,5 +1,6 @@
 ---
 import type { Post } from "../utils/posts";
+import { Image } from "astro:assets";
 import { stickerColor } from "../utils/color";
 import FormattedDate from "./FormattedDate.astro";
 
@@ -8,63 +9,76 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, pubDate, tags } = post.data;
-const firstTag = tags[0];
-const tagColor = firstTag ? stickerColor(firstTag) : undefined;
+const { title, description, pubDate, tags, cover, coverAlt } = post.data;
+const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
 ---
 
 <a
-  class="card"
+  class="card lift"
   href={`/blogs/${post.id}`}
-  style={tagColor ? `--tag-color: ${tagColor}` : undefined}
 >
-  <div class="card-meta">
-    <FormattedDate date={pubDate} />
-    {
-      firstTag && (
-        <span class="chip">
-          <span class="dot" />
-          #{firstTag}
-        </span>
-      )
-    }
+  {cover && (
+    <div class="card-cover">
+      <Image src={cover} alt={coverAlt ?? ""} width={640} height={360} />
+    </div>
+  )}
+  <div class="card-texts">
+    <div class="card-meta">
+      <FormattedDate date={pubDate} />
+      {
+        tagChips.map(({ tag, color }) => (
+          <span class="chip" style={`--tag-color: ${color}`}>
+            #{tag}
+          </span>
+        ))
+      }
+    </div>
+    <h3>{title}</h3>
+    <p>{description}</p>
   </div>
-  <h3>{title}</h3>
-  <p>{description}</p>
 </a>
 
 <style>
   .card {
     position: relative;
-    display: block;
-    height: 100%;
-    padding: 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
     text-decoration: none;
-    transition:
-      transform 0.2s var(--ease-bounce),
-      box-shadow 0.2s var(--ease-bounce),
-      border-color 0.2s var(--ease-bounce);
   }
 
   .card:hover {
-    transform: translateY(-3px);
     box-shadow: var(--shadow-float);
     border-color: var(--color-border-strong);
+    transform: rotate(-1deg) scale(1.06);
   }
 
-  .card:active {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-press);
+  .card-texts {
+    flex: 1;
+    padding: 1.4rem 1.5rem;
+  }
+
+  .card-cover {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .card-cover :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .card-meta {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.3rem;
     font-size: 0.8rem;
     color: var(--color-subtle);
   }
@@ -82,12 +96,5 @@ const tagColor = firstTag ? stickerColor(firstTag) : undefined;
     color: var(--color-muted);
     font-size: 0.95rem;
     line-height: 1.55;
-  }
-
-  .dot {
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: var(--radius-pill);
-    background: var(--tag-color, var(--color-accent));
   }
 </style>

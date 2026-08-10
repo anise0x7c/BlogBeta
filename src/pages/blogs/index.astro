@@ -72,8 +72,15 @@ const posts = await getPublishedPosts();
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    column-width: 20rem;
+    column-gap: 1.5rem;
+  }
+
+  .card-grid > li {
+    display: inline-block;
+    width: 100%;
+    vertical-align: top;
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
   }
 </style>
