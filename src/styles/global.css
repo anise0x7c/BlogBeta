@@ -240,7 +240,7 @@
   animation: vt-page-out 0.4s var(--ease-spring) both;
 }
 ::view-transition-new(content) {
-  animation: vt-page-in 0.5s var(--ease-spring) 0.1s both;
+  animation: vt-page-in 0.5s var(--ease-spring) 0.3s both;
 }
 
 /* drill: new page slides in from the right, old out to the left. */
@@ -248,7 +248,7 @@ html[data-nav="drill"]::view-transition-old(content) {
   animation: vt-out-left 0.4s var(--ease-spring) both;
 }
 html[data-nav="drill"]::view-transition-new(content) {
-  animation: vt-in-right 0.5s var(--ease-spring) 0.1s both;
+  animation: vt-in-right 0.5s var(--ease-spring) 0.3s both;
 }
 
 /* back: new page slides in from the left, old out to the right. */
@@ -256,7 +256,7 @@ html[data-nav="back"]::view-transition-old(content) {
   animation: vt-out-right 0.4s var(--ease-spring) both;
 }
 html[data-nav="back"]::view-transition-new(content) {
-  animation: vt-in-left 0.5s var(--ease-spring) 0.1s both;
+  animation: vt-in-left 0.5s var(--ease-spring) 0.3s both;
 }
 
 /* Respect reduced-motion: skip the animation entirely but still allow the

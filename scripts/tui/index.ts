@@ -9,10 +9,7 @@ import { getPosts } from "./lib/posts";
 
 type Action = "list" | "create" | "edit" | "toggle" | "editor" | "delete" | "exit";
 
-const BANNER = `
-  ┌──────────────────────────────────────────┐
-  │   80ml Spice Jar · Post Manager          │
-  └──────────────────────────────────────────┘`;
+const BANNER = `=== 80ml Spice Jar · Post Manager ===`;
 
 async function run(): Promise<void> {
   console.log(BANNER);
