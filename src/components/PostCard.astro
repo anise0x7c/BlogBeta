@@ -25,6 +25,10 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
   <div class="card-texts">
     <div class="card-meta">
       <FormattedDate date={pubDate} />
+    </div>
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <div class="card-tags">
       {
         tagChips.map(({ tag, color }) => (
           <span class="chip" style={`--tag-color: ${color}`}>
@@ -33,8 +37,6 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
         ))
       }
     </div>
-    <h3>{title}</h3>
-    <p>{description}</p>
   </div>
 </a>
 
@@ -75,12 +77,16 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
   }
 
   .card-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.6rem;
     font-size: 0.8rem;
     color: var(--color-subtle);
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+    margin-left: -0.2rem;
   }
 
   .card h3 {

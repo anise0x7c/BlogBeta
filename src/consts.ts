@@ -4,7 +4,7 @@ export const SITE = {
   title: "80ml Spice Jar",
   description:
     "Personal Site/Blog 由于几乎 100% 由 AI 谁知道下一秒会不会爆炸呢 😉",
-  author: "Anise",
+  author: "80CentsAnise",
 } as const;
 
 export const NAV_LINKS = [

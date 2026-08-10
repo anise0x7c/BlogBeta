@@ -268,6 +268,18 @@ html[data-nav="back"]::view-transition-new(content) {
   }
 }
 
+/* Sticky header must render *above* the animated <main> content during view
+   transitions.  Named VT groups stack in DOM order by default; <header>
+   precedes <main> so it would paint below — reverse with explicit z-index.
+   The header is identical across pages so `transition:animate="none"` makes
+   its snapshot static (no cross-fade). */
+::view-transition-group(site-header) {
+  z-index: 10;
+}
+::view-transition-group(content) {
+  z-index: 1;
+}
+
 
 
 /* =========================================================================
@@ -277,6 +289,15 @@ html[data-nav="back"]::view-transition-new(content) {
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+  }
+
+  /* During view transitions Astro sets `data-astro-transition` on <html> for
+     the entire lifecycle (callback + animation).  Force instant scroll so the
+     router's internal scrollTo() jump is captured correctly in the new VT
+     snapshot — otherwise the snapshot freezes at scroll 0 and "flashes" to the
+     real position when the overlay is removed. */
+  html[data-astro-transition] {
+    scroll-behavior: auto;
   }
 
   body {
