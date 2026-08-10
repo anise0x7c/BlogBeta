@@ -162,7 +162,7 @@
 | --- | --- |
 | **卡片 Card** | `bg:--surface` · `border:1px --border` · `--radius-lg` · `--shadow-card` · hover→`--shadow-float`+`translateY(-3px)` |
 | **标签 Chip** | `--radius-pill` · `--accent-soft` 底 + `--accent` 字；分类标签按贴纸色着色（每类一色） |
-| **按钮 Primary** | `--accent` 底 · `--accent-contrast` 字 · `--radius-md` · `--shadow-card` · hover 抬升 `translateY(-3px)` + `--shadow-float` + `--accent-strong` · active 回位 · 复用 `.lift` |
+| **按钮 Primary** | `--accent` 底 · `--accent-contrast` 字 · `--radius-md` · 阴影为**本身颜色的光晕**（`color-mix` 双层，rest 用 `--accent`、hover 用 `--accent-strong` 增强）· hover 抬升 `translateY(-3px)` · active 回位 · 复用 `.lift` |
 | **按钮 Ghost** | 透明底 · `--border` 描边 · hover `--surface-hover` · 同享 `.lift` 抬升 |
 | **链接** | 正文链接 `--accent` + 下划线偏移 `0.18em` |
 | **代码块** | `--surface-sunk` 底 · `--radius-lg` · `--shadow-press` · `--font-mono` |
