@@ -8,7 +8,6 @@ tags:
   - meta
 draft: false
 cover: ./cover.png
-coverAlt: A warm gradient cover image in the site's accent colours.
 ---
 
 This post lives in a folder together with its cover image, demonstrating the

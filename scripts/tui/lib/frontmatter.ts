@@ -37,7 +37,6 @@ export function normalizeFrontmatter(raw: Record<string, unknown>): BlogFrontmat
     tags: Array.isArray(raw.tags) ? raw.tags.map(String) : [],
     draft: Boolean(raw.draft),
     cover: raw.cover != null ? String(raw.cover) : undefined,
-    coverAlt: raw.coverAlt != null ? String(raw.coverAlt) : undefined,
   };
 }
 
@@ -52,7 +51,6 @@ function toSerialisable(fm: BlogFrontmatter): Record<string, unknown> {
   };
   if (fm.updatedDate) data.updatedDate = formatDate(fm.updatedDate);
   if (fm.cover) data.cover = fm.cover;
-  if (fm.coverAlt) data.coverAlt = fm.coverAlt;
   return data;
 }
 
@@ -65,7 +63,6 @@ const KNOWN_KEYS = [
   "tags",
   "draft",
   "cover",
-  "coverAlt",
 ] as const;
 
 /**
@@ -83,7 +80,7 @@ export function renderFile(fm: BlogFrontmatter, body: string): string {
  * Rewrite only the known frontmatter fields of a file.
  * - The body is preserved byte-for-byte.
  * - Unknown frontmatter keys (anything outside the schema) are preserved.
- * - Nullable fields (updatedDate/cover/coverAlt) are removed when unset.
+ * - Nullable fields (updatedDate/cover) are removed when unset.
  */
 export async function writeFrontmatter(
   filePath: string,

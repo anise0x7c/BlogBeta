@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, pubDate, tags, cover, coverAlt } = post.data;
+const { title, description, pubDate, tags, cover } = post.data;
 const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
 ---
 
@@ -19,7 +19,7 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
 >
   {cover && (
     <div class="card-cover">
-      <Image src={cover} alt={coverAlt ?? ""} width={640} height={360} />
+      <Image src={cover} alt="" width={640} height={360} />
     </div>
   )}
   <div class="card-texts">

@@ -13,7 +13,6 @@ export interface BlogFrontmatter {
   tags: string[];
   draft: boolean;
   cover?: string;
-  coverAlt?: string;
 }
 
 export interface Post {

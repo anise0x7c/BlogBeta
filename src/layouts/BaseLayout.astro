@@ -99,6 +99,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     const td = depth(e.to.pathname);
     const nav = td > fd ? "drill" : td < fd ? "back" : "sibling";
     e.newDocument.documentElement.dataset.nav = nav;
+    // Keep dark mode across navigations: swapRootAttributes copies the
+    // incoming <html>'s attributes, so stamp the class before the swap.
+    // Otherwise the theme is lost → light body anchored by scrollTo's forced
+    // layout → its background-color transition fires → white flash on back-nav.
+    if (document.documentElement.classList.contains("dark")) {
+      e.newDocument.documentElement.classList.add("dark");
+    }
   });
 </script>
 

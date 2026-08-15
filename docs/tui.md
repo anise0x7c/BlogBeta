@@ -97,7 +97,7 @@ scripts/tui/
 title: string            description: string
 pubDate: Date            updatedDate?: Date
 tags: string[]           draft: boolean
-cover?: string           coverAlt?: string
+cover?: string
 ```
 
 > ⚠️ **手动同步约定**：改 `content.config.ts` 的 schema 时，必须同步改 `types.ts`（以及 §5.3 的 `KNOWN_KEYS`）。做不到自动同步是因为这里故意不引入 `astro:content` 运行时。
@@ -123,7 +123,7 @@ cover?: string           coverAlt?: string
 
 - **正文保留**：`writeFrontmatter()` 先 `matter(raw)` 取出 `parsed.content`，写回时只替换 frontmatter。
 - **未知字段保留**：写回前遍历原始 `data`，把 `KNOWN_KEYS`（镜像 schema 的 8 个键）之外的键合并回新对象。
-- **可空字段可清空**：`updatedDate`/`cover`/`coverAlt` 在 `toSerialisable()` 中仅在非空时输出——未设置即从结果中删除，实现「清空」语义。
+- **可空字段可清空**：`updatedDate`/`cover` 在 `toSerialisable()` 中仅在非空时输出——未设置即从结果中删除，实现「清空」语义。
 
 日期处理约定：
 
@@ -225,7 +225,7 @@ printf '' | pnpm tui   # 无 TTY 冒烟：应打印菜单 + "aborted."，退出�
 ## 9. 已知限制与后续方向
 
 - **frontmatter 格式化归一化**（§5.3）：功能无损，风格不同于手写。要「输出即手写式样」需引入自定义 YAML engine。
-- **不管理封面图**：`cover`/`coverAlt` 字段在 `types.ts` 中存在、写回时保留，但 edit 流程暂不能编辑它们；新建 folder 形态时也不拷贝封面资源。
+- **不管理封面图**：`cover` 字段在 `types.ts` 中存在、写回时保留，但 edit 流程暂不能编辑它；新建 folder 形态时也不拷贝封面资源。
 - **tags 无联想**：新建/编辑时用逗号分隔输入，不做已有标签补全。
 - **slug 不支持中文/多级路径**：校验强制 `[a-z0-9-]`，纯中文标题需手输 slug。
 - **无自动测试**：数据层可独立复用，未来可加一个纯 Node 的单元测试入口（不引入 test runner 也行，用 `assert` 断言脚本）。

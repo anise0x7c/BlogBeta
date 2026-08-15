@@ -12,7 +12,7 @@ interface Props {
 }
 
 const { post, headings = [] } = Astro.props;
-const { title, description, pubDate, updatedDate, tags, cover, coverAlt } = post.data;
+const { title, description, pubDate, updatedDate, tags, cover } = post.data;
 const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const hasToc = tocItems.length > 0;
 ---
@@ -27,7 +27,7 @@ const hasToc = tocItems.length > 0;
       {
         cover && (
           <div class="post-cover">
-            <Image src={cover} alt={coverAlt ?? ""} width={1200} height={675} />
+            <Image src={cover} alt="" width={1200} height={675} />
           </div>
         )
       }
