@@ -5,7 +5,6 @@ import "../styles/global.css";
 import { SITE } from "../consts";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import SearchOverlay from "../components/SearchOverlay.svelte";
 
 interface Props {
   title?: string;
@@ -78,7 +77,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
       <slot />
     </main>
     <Footer />
-    <SearchOverlay client:load />
   </body>
 </html>
 

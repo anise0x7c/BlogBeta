@@ -2,14 +2,13 @@
 import { defineConfig, fontProviders } from 'astro/config';
 
 import svelte from '@astrojs/svelte';
-import pagefind from 'astro-pagefind';
 
 import tailwindcss from '@tailwindcss/vite';
 
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [svelte(), pagefind()],
+  integrations: [svelte()],
 
   // Self-hosted web fonts: downloaded at build time from Google and bundled
   // into ./dist — visitors never connect to fonts.googleapis.com.
