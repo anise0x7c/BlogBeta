@@ -10,7 +10,7 @@ const recent = await getRecentPosts(6);
 
 <BaseLayout>
   <section class="hero container">
-    <p class="eyebrow">Hello there</p>
+    <p class="eyebrow">Hello</p>
     <h1>Welcome to 80ml Spice Jar</h1>
     <p class="lede">
       {SITE.description}
@@ -125,15 +125,13 @@ const recent = await getRecentPosts(6);
     list-style: none;
     margin: 0;
     padding: 0;
-    column-width: 20rem;
-    column-gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
   }
 
   .card-list > li {
-    display: inline-block;
-    width: 100%;
-    vertical-align: top;
-    break-inside: avoid;
-    margin-bottom: 1.5rem;
+    display: grid;
   }
 </style>

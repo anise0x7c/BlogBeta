@@ -7,7 +7,7 @@ pubDate: '2026-08-06'
 tags:
   - meta
 draft: false
-cover: ./cover.png
+cover: ./cover.jpg
 ---
 
 This post lives in a folder together with its cover image, demonstrating the

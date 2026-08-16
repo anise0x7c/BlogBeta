@@ -3,10 +3,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* fonts */
-  --font-sans: "Nunito", "PingFang SC", "Noto Sans SC", system-ui, sans-serif,
+  /* fonts: the Astro <Font /> vars include metric-optimized fallbacks */
+  --font-sans: var(--font-nunito), "PingFang SC", "Noto Sans SC", system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
-  --font-display: "Caveat", "Ma Shan Zheng", cursive;
+  --font-display: var(--font-caveat), var(--font-mashanzheng), cursive;
   --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
   /* rounded corners */
@@ -330,7 +330,7 @@ html[data-vt-nav="back"]::view-transition-new(root) {
         color-mix(in srgb, var(--color-text) 5%, transparent) 1px,
         transparent 1px
       );
-    background-size: 3rem 3rem;
+    background-size: 2.3rem 2.3rem;
     color: var(--color-text);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
@@ -493,7 +493,11 @@ html[data-vt-nav="back"]::view-transition-new(root) {
     line-height: 1;
     padding: 0.3rem 0.65rem;
     border-radius: var(--radius-pill);
-    color: var(--tag-color, var(--color-accent));
-    background: color-mix(in srgb, var(--tag-color, var(--color-accent)) 20%, transparent);
+    color: #ffffff;
+    background: var(--tag-color, var(--color-accent));
+  }
+
+  .dark .chip {
+    color: #000000;
   }
 }
