@@ -187,20 +187,21 @@
 | `--animate-fade-in` | `fade-in 0.2s var(--ease-spring)` | 搜索浮层遮罩淡入 |
 | `--animate-modal-in` | `modal-in 0.25s var(--ease-bounce)` | 搜索浮窗弹入（上移+缩放） |
 | 交互元素 hover（卡片 / 按钮） | `translateY(-3px)` + 阴影升级，复用 `.lift` 工具类：几何 `0.4s --ease-bounce`、颜色 `0.25s --ease-spring` · active 回位 | PostCard + ThemedButton 实现 |
-| 主题切换 | `background/color 0.25s --ease-spring` | body 配色过渡 |
+| 主题切换 | `background/color 0.4s --ease-spring` | body 配色过渡 |
 
 ### 6.1 页面过渡动画（ClientRouter · 上下文感知）
 
-`<ClientRouter />` 开启 SPA 式路由。`<main transition:name="content">` 承载动画，全局 CSS 按 `html[data-nav]` 切换方向：
+`<ClientRouter />` 开启 SPA 式路由。动画承载在 **root 快照**上：`<html transition:name="root" transition:animate="none">`，全局 CSS 按 `html[data-vt-nav]` 切换方向。选择 root（视口快照）而非命名 `<main>` 的原因：root 组几何恒为视口，两次捕获间发生的滚动恢复不会泄漏成纵向位移（否则与水平滑动叠加成斜向运动）。
 
-| `data-nav` | 判定（路由深度） | 旧页 | 新页 |
+| `data-vt-nav` | 判定（路由深度） | 旧页 | 新页 |
 | --- | --- | --- | --- |
-| `drill` | `to.depth > from.depth`（深入：`/`→`/blogs`→`/blogs/x`） | 向左滑出 `vt-out-left` | 从右滑入 `vt-in-right` |
-| `back` | `to.depth < from.depth`（返回） | 向右滑出 `vt-out-right` | 从左滑入 `vt-in-left` |
-| `sibling` | 深度相等（文章↔文章） | 淡出+下移 `vt-page-out` | 淡入+上移 `vt-page-in` |
+| `drill` | `to.depth > from.depth`（深入：`/`→`/blogs`→`/blogs/x`） | 淡出+左移 `vt-out-left` | 从右淡入 `vt-in-right`（0.2s delay） |
+| `back` | `to.depth < from.depth`（返回） | 淡出+右移 `vt-out-right` | 从左淡入 `vt-in-left`（0.2s delay） |
+| `sibling` | 深度相等（文章↔文章） | 淡出+下移 `vt-page-out` | 淡入+上移 `vt-page-in`（0.2s delay） |
 
-- 路由深度：`/`=0、`/blogs`=1、`/blogs/*`=2，其余按段数兜底；由 `astro:before-swap` 脚本计算并写入新文档 `<html data-nav>`。
-- 水平位移 `3rem`、垂直 `2rem`，时长旧页 `0.4s` / 新页 `0.5s + 0.1s delay`，缓动 `--ease-spring`。
+- 路由深度按路径段数计算（`split("/").filter(Boolean).length`，天然抗尾斜杠）；由 `astro:before-swap` 脚本计算并写入新文档 `<html data-vt-nav>`。
+- 位移一律用**固定 rem 值**（横向 `4rem`、纵向 `2rem`），与视口宽度脱钩——宽屏上滑动距离不会随之增长。三种导航均为**顺序编排**：旧页先出、新页后进。
+- 缓动遵循 Material Design 3 的进/出不对称：进入屏幕用 `--ease-enter`（emphasized decelerate `cubic-bezier(0.05, 0.7, 0.1, 1)`，0.4s），离开屏幕用 `--ease-exit`（emphasized accelerate `cubic-bezier(0.3, 0, 0.8, 0.15)`，0.2s）——"进入从容、离开利落"，总时长 0.6s。主题色与 hover 仍用 `--ease-spring`。
 - 旧/新页各自以 `forwards` / `backwards` 同动画方向呈现（历史前进/后退不做方向反转）。
 
 > 动效一律尊重 `prefers-reduced-motion`：开启时所有 view-transition 动画以 `animation: none !important` 全局禁用，仅保留无动画的内容交换；颜色过渡仍保留。

@@ -19,7 +19,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 ---
 
 <!doctype html>
-<html lang="en" transition:animate="none">
+<html lang="en" transition:name="root" transition:animate="none">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -73,7 +73,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
   </head>
   <body>
     <Header />
-    <main transition:name="content">
+    <main>
       <slot />
     </main>
     <Footer />
@@ -84,21 +84,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
   import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
 
   // Context-aware page transitions: classify each navigation by route depth and
-  // tag the incoming <html> with data-nav so CSS picks drill/back/sibling
-  // animations. Bundled scripts run once; the listener stays alive across swaps.
-  const depth = (path: string): number => {
-    if (path === "/") return 0;
-    if (path === "/blogs") return 1;
-    if (path.startsWith("/blogs/")) return 2;
-    return path.split("/").filter(Boolean).length;
-  };
+  // tag the incoming <html> with data-vt-nav so CSS picks drill/back/sibling
+  // animations. The marker is transient — only consulted by ::view-transition-*
+  // rules during the animation; it lingers after the transition by design and is
+  // harmless (each navigation re-stamps a freshly fetched document). Bundled
+  // scripts run once; the listener stays alive across swaps.
+  const depth = (path: string): number =>
+    path.split("/").filter(Boolean).length;
 
   document.addEventListener("astro:before-swap", (event) => {
     const e = event as TransitionBeforeSwapEvent;
     const fd = depth(e.from.pathname);
     const td = depth(e.to.pathname);
     const nav = td > fd ? "drill" : td < fd ? "back" : "sibling";
-    e.newDocument.documentElement.dataset.nav = nav;
+    e.newDocument.documentElement.dataset.vtNav = nav;
     // Keep dark mode across navigations: swapRootAttributes copies the
     // incoming <html>'s attributes, so stamp the class before the swap.
     // Otherwise the theme is lost → light body anchored by scrollTo's forced
