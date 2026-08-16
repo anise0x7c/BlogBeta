@@ -61,20 +61,24 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
     overflow: hidden;
   }
 
+  /* Blur is paint-time `filter` on the image itself (not backdrop-filter on
+     the veil): backdrop-filter is a compositor effect that snapshots/raster
+     trees drop during view transitions, which made the card lose its blur
+     mid-animation. scale() pushes the blur's soft edge outside the clip. */
   .card-bg :global(img) {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: blur(5px);
+    transform: scale(1.1);
   }
 
-  /* Blur + darken veil over the background image */
+  /* Darken veil only; blurring happens on the image beneath it. */
   .card-veil {
     position: absolute;
     inset: 0;
     background-color: color-mix(in srgb, rgb(0, 0, 0) 40%, transparent);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
   }
 
   .card.has-cover .card-texts {
