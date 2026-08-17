@@ -1,0 +1,148 @@
+@theme {
+  /*
+    fonts — Astro's fonts API exposes hashed family names (e.g.
+    "Nunito-f1510a…") via these CSS variables; raw names like "Nunito" never
+    match the generated @font-face, so always consume the variables.
+    --font-nunito already ends with metric-optimized + generic fallbacks, so
+    CJK/emoji chars fall through to system fonts naturally.
+
+    正文：拉丁 → Nunito；中文/emoji → 沿 --font-nunito 自带的度量优化回退落到系统字体
+    手写体标题：英文 → Caveat；中文 → 穿透到马善政
+    代码：JetBrains Mono（所有访客一致），中文注释回退系统等宽
+  */
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-caveat), var(--font-mashanzheng), cursive;
+  --font-mono: 
+    var(--font-jetbrains-mono), ui-monospace,
+    "Fira Code", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* rounded corners */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
+  --radius-pill: 999px;
+
+  /* shadows(?inset, offset-x, offset-y, blur, ?spread, color) */
+  --shadow-sticky:
+    0 2px 4px rgba(120, 90, 50, 0.35);
+  --shadow-card:
+    0 4px 12px rgba(120, 90, 50, 0.12),
+    0 2px 4px rgba(120, 90, 50, 0.2);
+  --shadow-float:
+    0 12px 28px rgba(120, 90, 50, 0.2),
+    0 4px 8px rgba(120, 90, 50, 0.3);
+  --shadow-press: inset 0 2px 3px rgba(120, 90, 50, 0.2);
+
+  /* motion */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.5, 1.56, 0.64, 1);
+  --ease-enter: cubic-bezier(0.05, 0.7, 0.1, 1); /* Page transition */
+  --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);  /* Page transition */
+
+  /* layouts — generates max-w-page / max-w-article / max-w-prose utilities */
+  --container-page: 72rem; /* 页面整体宽度上限 (Header / Footer / list pages) */
+  --container-article: 64rem; /* 文章 + 侧栏 (TOC) 并排时宽度上限 */
+  --container-prose: 44rem; /* 正文可读行宽上限 (~66-70 字/行) */
+}
+
+
+
+/*
+  Semantic aliases: `inline` resolves the var() at use-site, so theme swaps
+  just work. Consume only these names, never the raw values.
+*/
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-surface-hover: var(--surface-hover);
+
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-subtle: var(--text-subtle);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-mint: var(--c-mint);
+  --color-sky: var(--c-sky);
+  --color-lemon: var(--c-lemon);
+  --color-grape: var(--c-grape);
+  --color-peach: var(--c-peach);
+  --color-berry: var(--c-berry);
+}
+
+/* Light theme */
+:root {
+  --canvas: #faf5ec;
+  --surface: #ffffff;
+  --surface-sunk: #f3ece0;
+  --surface-hover: #f6f0e5;
+
+  --text: #322b23;
+  --text-muted: #6a5f52;
+  --text-subtle: #a89b8b;
+
+  --accent: #ff6b8d;
+  --accent-strong: #f24e73;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(255, 107, 141, 0.14);
+
+  --border: #eadfcb;
+  --border-strong: #d8c9ae;
+
+  --c-mint: #34c9a3;
+  --c-sky: #4da9e6;
+  --c-lemon: #f5c24b;
+  --c-grape: #a982e8;
+  --c-peach: #ff9c73;
+  --c-berry: #e85a8c;
+
+  color-scheme: light;
+}
+
+/* Dark theme */
+.dark {
+  --canvas: #0d0c0b;
+  --surface: #121110;
+  --surface-sunk: #050504;
+  --surface-hover: #262422;
+
+  --text: #f0e8dc;
+  --text-muted: #b3a695;
+  --text-subtle: #807263;
+
+  --accent: #ff8fab;
+  --accent-strong: #ffadc2;
+  --accent-contrast: #3d1521;
+  --accent-soft: rgba(255, 143, 171, 0.16);
+
+  --border: #332f2b;
+  --border-strong: #4d4741;
+
+  --c-mint: #5dddb6;
+  --c-sky: #74c0f0;
+  --c-lemon: #ffd27a;
+  --c-grape: #c2a4f2;
+  --c-peach: #ffb595;
+  --c-berry: #f47fa6;
+
+  --shadow-sticky:
+    0 2px 4px rgba(0, 0, 0, 0.35);
+  --shadow-card:
+    0 4px 12px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.7);
+  --shadow-float:
+    0 12px 28px rgba(0, 0, 0, 0.36),
+    0 4px 8px rgba(0, 0, 0, 0.9);
+  --shadow-press: inset 0 2px 3px rgba(0, 0, 0, 0.7);
+
+  color-scheme: dark;
+}

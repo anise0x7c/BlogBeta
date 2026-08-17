@@ -268,7 +268,7 @@
     justify-content: center;
     align-items: flex-start;
     padding: 10vh 1.25rem 1.25rem;
-    background: rgba(35, 28, 21, 0.45);
+    backdrop-filter: blur(7px);
   }
 
   .panel {
@@ -281,7 +281,7 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-float);
     overflow: hidden;
-    animation: overlay-in 0.18s var(--ease-spring) both;
+    animation: overlay-in 0.4s var(--ease-spring) both;
   }
 
   @keyframes overlay-in {
