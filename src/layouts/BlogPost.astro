@@ -21,7 +21,7 @@ const hasToc = tocItems.length > 0;
   <article
     class="post"
     class:list={{ "has-toc": hasToc }}
-    data-pagefind-filter="collection:blog"
+    data-pagefind-body
   >
     <header class="post-header">
       {
@@ -46,7 +46,7 @@ const hasToc = tocItems.length > 0;
       <h1>{title}</h1>
       {
         tags.length > 0 && (
-          <ul class="tags">
+          <ul class="tags" data-pagefind-ignore>
             {tags.map((tag) => (
               <li>
                 <span class="chip" style={`--tag-color: ${stickerColor(tag)}`}>
@@ -66,7 +66,7 @@ const hasToc = tocItems.length > 0;
       </div>
       {
         hasToc && (
-          <aside class="toc" aria-label="Table of contents">
+          <aside class="toc" aria-label="Table of contents" data-pagefind-ignore>
             <p class="toc-title">On this page</p>
             <nav>
               <ul>
@@ -82,7 +82,7 @@ const hasToc = tocItems.length > 0;
       }
     </div>
 
-    <footer class="post-footer">
+    <footer class="post-footer" data-pagefind-ignore>
       <a href="/blogs">&larr; Back to all posts</a>
     </footer>
   </article>
