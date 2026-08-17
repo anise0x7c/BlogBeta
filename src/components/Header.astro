@@ -19,7 +19,7 @@ function isActive(href: string): boolean {
         NAV_LINKS.map((link) => (
           <a
             href={link.href}
-            class:list={["nav-link", isActive(link.href) && "active"]}
+            class:list={["lift", "nav-link", isActive(link.href) && "active"]}
           >
             {link.label}
           </a>
@@ -28,7 +28,7 @@ function isActive(href: string): boolean {
     </nav>
 
     <div class="tools">
-      <ThemedButton
+      <ThemedButton 
         iconOnly
         title="Search"
         ariaLabel="Search"
@@ -100,6 +100,11 @@ function isActive(href: string): boolean {
   </div>
 </header>
 
+<!-- Search overlay island: bound to [data-search-trigger] above. client:load
+     so ⌘K works before any interaction; the island itself renders nothing
+     until opened. -->
+<SearchOverlay client:load />
+
 
 
 <script>
@@ -120,6 +125,8 @@ function isActive(href: string): boolean {
   };
   document.addEventListener("astro:page-load", setupThemeToggle);
 </script>
+
+
 
 <style>
   .site-header {
@@ -168,14 +175,14 @@ function isActive(href: string): boolean {
   .nav-link:hover {
     color: var(--color-text);
     border-color: var(--color-border-strong);
+    background-color: var(--color-surface-hover);
   }
 
   .nav-link.active,
   .nav-link.active:hover {
     color: var(--color-text);
-    background: var(--color-surface-sunk);
-    box-shadow: var(--shadow-press);
-    border: 1px solid transparent
+    font-weight: bold;
+    text-decoration: underline;
   }
 
   .tools {

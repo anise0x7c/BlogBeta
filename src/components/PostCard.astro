@@ -54,6 +54,10 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
     text-decoration: none;
   }
 
+  .card:hover {
+    box-shadow: var(--shadow-float);
+    border-color: var(--color-border-strong);
+ }
   /* Cover as full-card background */
   .card-bg {
     position: absolute;

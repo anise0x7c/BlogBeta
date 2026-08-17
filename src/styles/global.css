@@ -3,10 +3,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* fonts: the Astro <Font /> vars include metric-optimized fallbacks */
-  --font-sans: var(--font-nunito), "PingFang SC", "Noto Sans SC", system-ui, sans-serif,
+  /* fonts */
+  --font-sans: "Nunito", "PingFang SC", "Noto Sans SC", system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
-  --font-display: var(--font-caveat), var(--font-mashanzheng), cursive;
+  --font-display: "Caveat", "Ma Shan Zheng", cursive;
   --font-mono: "JetBrains Mono", ui-monospace, "Fira Code", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
   /* rounded corners */
@@ -41,24 +41,6 @@
   --container-prose: 44rem; /* 正文可读行宽上限 (~66-70 字/行) */
 }
 
-/* Shared hover "lift" motion for interactive cards / buttons. Apply the `lift`
-   utility to any element that should rise on hover: geometry (transform,
-   box-shadow) animates with the bouncy ease, colors (border / background /
-   text) with the smoother spring ease. */
-@utility lift {
-  transition:
-    transform 0.4s var(--ease-bounce),
-    box-shadow 0.4s var(--ease-bounce),
-    border-color 0.25s var(--ease-spring),
-    background-color 0.25s var(--ease-spring),
-    color 0.25s var(--ease-spring);
-  @variant hover {
-    transform: translateY(-3px);
-  }
-  @variant active {
-    transform: translateY(0);
-  }
-}
 
 
 /* Semantic aliases: `inline` resolves the var() at use-site, so theme swaps
@@ -343,14 +325,15 @@ html[data-vt-nav="back"]::view-transition-new(root) {
      while <body> fades.  Give everything the same colour transition so the
      light/dark toggle moves in sync; components that declare their own
      `transition` (e.g. `.lift`) still override this via specificity. */
-  *,
-  *::before,
-  *::after {
-    transition:
-      background-color 0.4s var(--ease-spring),
-      border-color 0.4s var(--ease-spring),
-      color 0.4s var(--ease-spring);
-  }
+   *,
+   *::before,
+   *::after {
+     transition:
+       background-color 0.4s var(--ease-spring),
+       border-color 0.4s var(--ease-spring),
+       color 0.4s var(--ease-spring),
+       box-shadow 0.4s var(--ease-spring);
+   }
 
   :focus-visible {
     outline: 2px solid var(--color-accent);
