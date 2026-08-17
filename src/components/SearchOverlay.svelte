@@ -1,5 +1,7 @@
 <script lang="ts">
   import { tick } from "svelte";
+  import { fade } from "svelte/transition";
+  import searchIcon from "../assets/icons/search.svg?raw";
 
   // Minimal types for the runtime index astro-pagefind copies to /pagefind.
   // Declared locally — the specifier only exists at runtime (dynamic import
@@ -23,6 +25,13 @@
 
   const MAX_RESULTS = 8;
   const DEBOUNCE_MS = 200;
+
+  // Svelte transitions are JS-driven and ignore the CSS reduced-motion
+  // override on .panel, so gate the duration here instead. Guarded for SSR
+  // (the island is server-rendered first); hydration re-evaluates on client.
+  const reducedMotion =
+    typeof matchMedia === "function" &&
+    matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let open = $state(false);
   let query = $state("");
@@ -195,27 +204,14 @@
   <div
     class="overlay"
     role="presentation"
+    transition:fade={{ duration: reducedMotion ? 0 : 120 }}
     onmousedown={(e) => {
       if (e.target === e.currentTarget) closeOverlay();
     }}
   >
     <div class="panel" role="dialog" aria-modal="true" aria-label="站内搜索">
       <div class="box">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <circle cx="11" cy="11" r="7" />
-          <path d="m21 21-4.3-4.3" />
-        </svg>
+        {@html searchIcon}
         <input
           bind:this={inputEl}
           bind:value={query}
@@ -268,7 +264,9 @@
     justify-content: center;
     align-items: flex-start;
     padding: 10vh 1.25rem 1.25rem;
+    background: color-mix(in srgb, #000000 20%, transparent);
     backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
   }
 
   .panel {
@@ -282,17 +280,6 @@
     box-shadow: var(--shadow-float);
     overflow: hidden;
     animation: overlay-in 0.4s var(--ease-spring) both;
-  }
-
-  @keyframes overlay-in {
-    from {
-      opacity: 0;
-      transform: translateY(-0.75rem) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
