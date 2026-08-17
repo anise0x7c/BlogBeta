@@ -45,6 +45,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <Font cssVariable="--font-nunito" preload={[{ weight: "400" }]} />
     <Font cssVariable="--font-caveat" preload={[{ weight: "600" }]} />
     <Font cssVariable="--font-mashanzheng" />
+    <Font cssVariable="--font-jetbrains-mono" />
 
     <!-- Theme is applied before first paint to avoid a flash of the wrong mode.
          Runs inline, synchronously, in <head>. Re-applied on `astro:after-swap`
