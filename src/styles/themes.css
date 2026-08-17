@@ -82,21 +82,21 @@
 /* Light theme */
 :root {
   --canvas: #faf5ec;
-  --surface: #ffffff;
+  --surface: #faf9f7;
   --surface-sunk: #f3ece0;
-  --surface-hover: #f6f0e5;
+  --surface-hover: #f2eada;
 
   --text: #322b23;
   --text-muted: #6a5f52;
   --text-subtle: #a89b8b;
 
   --accent: #ff6b8d;
-  --accent-strong: #f24e73;
-  --accent-contrast: #ffffff;
+  --accent-strong: #ff7f9d;
+  --accent-contrast: #faf9f7;
   --accent-soft: rgba(255, 107, 141, 0.14);
 
-  --border: #eadfcb;
-  --border-strong: #d8c9ae;
+  --border: #ccc1ad;
+  --border-strong: #b3a68f;
 
   --c-mint: #34c9a3;
   --c-sky: #4da9e6;
