@@ -2,9 +2,9 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@import "src/styles/themes.css";
-@import "src/styles/animations.css";
-@import "src/styles/components.css";
+@import "/src/styles/themes.css";
+@import "/src/styles/animations.css";
+@import "/src/styles/components.css";
 
 
 /* Base element styles */
@@ -32,15 +32,15 @@
     */
     background-color: var(--color-canvas);
     background-image: linear-gradient(
-        color-mix(in srgb, var(--color-text) 5%, transparent) 1px,
+        color-mix(in srgb, var(--color-text) 7%, transparent) 1px,
         transparent 1px
       ),
       linear-gradient(
         90deg,
-        color-mix(in srgb, var(--color-text) 5%, transparent) 1px,
+        color-mix(in srgb, var(--color-text) 7%, transparent) 1px,
         transparent 1px
       );
-    background-size: 2.3rem 2.3rem;
+    background-size: 4rem 4rem;
     color: var(--color-text);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;

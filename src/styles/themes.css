@@ -110,39 +110,39 @@
 
 /* Dark theme */
 .dark {
-  --canvas: #0d0c0b;
-  --surface: #121110;
-  --surface-sunk: #050504;
-  --surface-hover: #262422;
+  --canvas: #1e1e2e;
+  --surface: #363a4f;
+  --surface-sunk: #313244;
+  --surface-hover: #494d64;
 
-  --text: #f0e8dc;
-  --text-muted: #b3a695;
-  --text-subtle: #807263;
+  --text: #cdd6f4;
+  --text-muted: #bac2de;
+  --text-subtle: #a6adc8;
 
-  --accent: #ff8fab;
-  --accent-strong: #ffadc2;
+  --accent: #fac8dd;
+  --accent-strong: #fad4e4;
   --accent-contrast: #3d1521;
   --accent-soft: rgba(255, 143, 171, 0.16);
 
-  --border: #332f2b;
-  --border-strong: #4d4741;
+  --border: #5b6078;
+  --border-strong: #8087a2;
 
-  --c-mint: #5dddb6;
-  --c-sky: #74c0f0;
-  --c-lemon: #ffd27a;
-  --c-grape: #c2a4f2;
-  --c-peach: #ffb595;
-  --c-berry: #f47fa6;
+  --c-mint: #a6da95;
+  --c-sky: #91d7e3;
+  --c-lemon: #eed49f;
+  --c-grape: #c6a0f6;
+  --c-peach: #f5a97f;
+  --c-berry: #ed8796;
 
   --shadow-sticky:
-    0 2px 4px rgba(0, 0, 0, 0.35);
+    0 2px 4px rgba(17, 17, 27, 0.8);
   --shadow-card:
-    0 4px 12px rgba(0, 0, 0, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.7);
+    0 4px 12px rgba(17, 17, 27, 0.8),
+    0 2px 4px rgba(17, 17, 27, 0.9);
   --shadow-float:
-    0 12px 28px rgba(0, 0, 0, 0.36),
-    0 4px 8px rgba(0, 0, 0, 0.9);
-  --shadow-press: inset 0 2px 3px rgba(0, 0, 0, 0.7);
+    0 12px 28px rgba(17, 17, 27, 0.7),
+    0 4px 8px rgba(17, 17, 27, 0.9);
+  --shadow-press: inset 0 2px 3px rgb(17, 17, 27);
 
   color-scheme: dark;
 }

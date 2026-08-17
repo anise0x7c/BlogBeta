@@ -138,3 +138,16 @@ html[data-vt-nav="back"]::view-transition-new(root) {
 ::view-transition-group(root) {
   z-index: 1;
 }
+
+
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
