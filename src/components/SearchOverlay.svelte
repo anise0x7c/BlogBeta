@@ -275,7 +275,7 @@
     width: min(40rem, 100%);
     max-height: 70vh;
     background: var(--color-surface);
-    border: 1px solid var(--color-border-strong);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-float);
     overflow: hidden;
