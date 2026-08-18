@@ -76,7 +76,7 @@ const recent = await getRecentPosts(6);
   }
 
   .hero-inner {
-    background-color: trasnparent;
+    background-color: transparent;
     backdrop-filter: blur(12px) saturate(1.2);
     -webkit-backdrop-filter: blur(12px) saturate(1.2);
     padding: 3rem;
@@ -86,6 +86,23 @@ const recent = await getRecentPosts(6);
       var(--shadow-float),
       var(--shadow-lqdglass);
     translate: 0 -50px;
+  }
+
+  /* Firefox drops backdrop-filter inside view-transition snapshots
+     (Bugzilla 1999295), so the glass card loses its blur for the whole
+     animation. Astro brackets every client-side navigation with
+     <html data-astro-transition="…">: set before startViewTransition
+     (baked into the OLD snapshot), carried across the swap
+     (non-overridable attr, baked into the NEW snapshot), removed when
+     the transition finishes. Firefox applies :active-view-transition
+     too late for the old snapshot — which is why leaving / still showed
+     the broken glass. Do NOT add a transition on background-color —
+     the gradient would be captured mid-way and the bug would resurface. */
+  @supports (-moz-appearance: none) {
+    html[data-astro-transition] .hero-inner {
+      transition: none;
+      background-color: var(--color-canvas);
+    }
   }
 
   .eyebrow {

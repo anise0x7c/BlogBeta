@@ -107,6 +107,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
       e.newDocument.documentElement.classList.add("dark");
     }
   });
+
+  
+  const VT_GLASS = "data-vt-glass";
+  document.addEventListener("astro:before-preparation", () => {
+    document.documentElement.setAttribute(VT_GLASS, "");
+  });
+  document.addEventListener("astro:before-swap", (event) => {
+    const e = event as TransitionBeforeSwapEvent;
+    e.newDocument.documentElement.setAttribute(VT_GLASS, "");
+    e.viewTransition?.finished.finally(() =>
+      document.documentElement.removeAttribute(VT_GLASS),
+    );
+  });
+  document.addEventListener("astro:page-load", () =>
+    document.documentElement.removeAttribute(VT_GLASS),
+  );
 </script>
 
 <style is:global>
