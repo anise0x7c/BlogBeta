@@ -30,24 +30,26 @@ function isActive(href: string): boolean {
     </nav>
 
     <div class="tools">
-      <ThemedButton 
+      <ThemedButton
+        variant="flat"
         iconOnly
         title="Search"
         ariaLabel="Search"
         aria-haspopup="dialog"
         aria-expanded="false"
         data-search-trigger
-        class="rounded-md"
+        class="rounded-pill"
       >
       <SearchIcon slot="icon" />
       </ThemedButton>
 
       <ThemedButton
+      variant="flat"
         iconOnly
         title="Toggle dark mode"
         ariaLabel="Toggle dark mode"
         data-theme-toggle
-        class="rounded-md"
+        class="rounded-pill"
       >
         <svg
           slot="icon"
@@ -122,19 +124,23 @@ function isActive(href: string): boolean {
     position: sticky;
     top: 0;
     z-index: 50;
-    width: 100%;
-    background: var(--color-canvas);
-    box-shadow: var(--shadow-sticky);
+    max-width: 40rem;
+    margin: auto;
+    translate: 0 6px;
   }
 
   .header-inner {
+    background-color: var(--color-canvas);
+    border-radius: var(--radius-pill);
+    border: solid 2px var(--color-surface);
+    box-shadow: var(--shadow-sticky);
+    margin: 0 1.25rem;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
     min-height: 3.75rem;
-    max-width: var(--container-page);
-    margin-inline: auto;
-    padding: 0.75rem 1.25rem;
+    padding: 0.9rem 1.25rem;
   }
 
   .site-logo {

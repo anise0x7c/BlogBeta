@@ -47,11 +47,11 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
     flex-direction: column;
     overflow: hidden;
 
-    background-color: transparent;
+    background-color: color-mix(in srgb, var(--color-surface) 55%, transparent);
     border-radius: var(--radius-3xl);
     box-shadow: var(--shadow-card), var(--shadow-lqdglass);
-    backdrop-filter: blur(3px) saturate(1.2);
-    -webkit-backdrop-filter: blur(3px) saturate(1.2);
+    backdrop-filter: blur(10px) saturate(1.6) brightness(0.9);
+    -webkit-backdrop-filter: blur(10px) saturate(1.6) brightness(0.9);
     
     transition:
       transform 0.4s var(--ease-bounce),
@@ -72,7 +72,7 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
        colour transition would otherwise leave the tint at t≈0 on capture. */
     html[data-astro-transition] .card.has-cover .card-surface {
       transition: none;
-      background-color: var(--color-canvas);
+      background-color: #676767;
     }
   }
 
@@ -82,13 +82,16 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
     transform:scale(1.03) translateY(-8px);
   }
 
+  .card:active {
+    transform:scale(1) translateY(0px);
+  }
+
   /* Cover as full-card background */
   .card-bg-img {
     position: absolute;
     inset: 0;
     overflow: hidden;
 
-    scale: 102%;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -98,7 +101,7 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 2.3rem 2.7rem;
+    padding: 2.7rem;
   }
 
   .card-meta {
@@ -134,9 +137,11 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
   /* variant when has cover */
   .card.has-cover .card-surface {
     position: relative;
-    background-color: color-mix(in srgb, #000000 30%, transparent) ;
+    background-color: color-mix(in srgb, #000000 25%, transparent);
+    border-radius: var(--radius-3xl);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    border: solid 2px var(--color-surface);
   }
 
   .card.has-cover .card-meta {

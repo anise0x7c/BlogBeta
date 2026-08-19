@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant?: "solid" | "outline";
+  variant?: "solid" | "outline" | "flat";
   size?: "sm" | "md" | "lg";
   iconOnly?: boolean;
   href?: string;
@@ -28,11 +28,12 @@ const base =
 
 const variants = {
   solid:
-    "border border-accent bg-accent text-accent-contrast\
-     hover:bg-accent-strong \
-     btn-solid",
+    "bg-accent text-accent-contrast hover:bg-accent-strong btn-solid-glow",
   outline:
     "border border-border bg-transparent text-muted\
+     hover:border-border-strong hover:bg-surface-hover hover:text-text",
+  flat:
+    "border border-transparent rext-muted\
      hover:border-border-strong hover:bg-surface-hover hover:text-text",
 };
 
@@ -61,13 +62,13 @@ const classes = [base, variants[variant], sizeClass, extra].join(" ");
 }
 
 <style>
-  .btn-solid {
+  .btn-solid-glow {
     box-shadow:
       0 0 14px color-mix(in srgb, var(--color-accent) 40%, transparent),
       0 0 32px color-mix(in srgb, var(--color-accent) 20%, transparent);
   }
 
-  .btn-solid:hover {
+  .btn-solid-glow:hover {
     box-shadow:
       0 0 22px color-mix(in srgb, var(--color-accent-strong) 50%, transparent),
       0 0 52px color-mix(in srgb, var(--color-accent-strong) 25%, transparent);

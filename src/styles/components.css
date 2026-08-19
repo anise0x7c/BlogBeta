@@ -54,7 +54,6 @@
     border-radius: var(--radius-lg);
     padding: 1rem 1.25rem;
     overflow-x: auto;
-    box-shadow: var(--shadow-press);
   }
   .prose pre code {
     background: none;

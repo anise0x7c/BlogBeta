@@ -22,6 +22,15 @@
   accelerate (--ease-exit, 0.2s), then the new page glides in with emphasized
   decelerate (--ease-enter, 0.4s + 0.2s delay). Glide in, clear out.
 */
+
+@theme {
+  /* motion */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.5, 2.4, 0.4, 1);
+  --ease-enter: cubic-bezier(0.05, 0.7, 0.1, 1); /* Page transition */
+  --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);  /* Page transition */
+}
+
 @keyframes vt-page-out {
   from {
     opacity: 1;
