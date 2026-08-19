@@ -67,6 +67,11 @@
   --color-grape: var(--c-grape);
   --color-peach: var(--c-peach);
   --color-berry: var(--c-berry);
+
+  --shadow-sticky: var(--shadow-sticky)
+  --shadow-card: var(--shadow-card)
+  --shadow-float: var(--shadow-float)
+  --shadow-lqdglass: var(--shadow-lqdglass)
 }
 
 /* Light theme */
@@ -99,14 +104,14 @@
   --shadow-sticky:
     0 2px 4px rgba(120, 90, 50, 0.35);
   --shadow-card:
-    0 4px 12px rgba(120, 90, 50, 0.12),
-    0 2px 4px rgba(120, 90, 50, 0.2);
+    0 12px 28px rgba(120, 90, 50, 0.1),
+    0 4px 8px rgba(120, 90, 50, 0.2);
   --shadow-float:
-    0 12px 28px rgba(120, 90, 50, 0.2),
-    0 4px 8px rgba(120, 90, 50, 0.3);
+    0 20px 35px rgba(120, 90, 50, 0.2),
+    0 8px 16px rgba(120, 90, 50, 0.3);
   --shadow-lqdglass:
-    inset 5px 0 25px rgba(254, 252, 246, 0.7),
-    inset 0 -15px 25px rgba(254, 252, 246, 0.7);
+    inset 0 5px 10px rgba(255, 255, 255, 0.68),
+    inset 0 -15px 30px rgba(255, 255, 255, 0.7);
 
   color-scheme: light;
 }
@@ -137,17 +142,18 @@
   --c-peach: #fab387;
   --c-berry: #f38ba8;
 
+  /* shadows(?inset, offset-x, offset-y, blur, ?spread, color) */
   --shadow-sticky:
     0 2px 4px rgba(17, 17, 27, 0.8);
   --shadow-card:
-    0 4px 12px rgba(17, 17, 27, 0.8),
-    0 2px 4px rgba(17, 17, 27, 0.9);
-  --shadow-float:
-    0 12px 28px rgba(17, 17, 27, 0.7),
+    0 12px 28px rgba(17, 17, 27, 0.8),
     0 4px 8px rgba(17, 17, 27, 0.9);
+  --shadow-float:
+    0 20px 35px rgba(17, 17, 27, 0.7),
+    0 8px 16px rgba(17, 17, 27, 0.9);
   --shadow-lqdglass:
-    inset 5px 0 25px rgba(49, 50, 68, 0.7),
-    inset 0 -15px 25px rgba(49, 50, 68, 0.7);
+    inset 0 5px 10px rgba(255, 255, 255, 0.08),
+    inset 0 -15px 30px rgba(255, 255, 255, 0.1);
 
   color-scheme: dark;
 }

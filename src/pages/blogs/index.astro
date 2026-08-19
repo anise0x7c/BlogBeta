@@ -8,10 +8,10 @@ const posts = await getPublishedPosts();
 
 <BaseLayout title="Blog" description="All posts, newest first.">
   <section class="container">
-    <header class="page-head">
+    <div class="page-head">
       <h1>The Blog</h1>
       <p>Everything I've written, newest first.</p>
-    </header>
+    </div>
 
     {
       posts.length === 0 ? (

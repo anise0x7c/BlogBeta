@@ -12,10 +12,19 @@ const STICKER_VARS = [
   "var(--color-lemon)",
 ] as const;
 
+// FNV-1a + murmur-style final avalanche: plain multiplicative hashes (h*31+c,
+// djb2) cluster short tags onto the same palette slot — "CSS", "Astro", "Dev"
+// all landed on lemon. The per-char xor and the final avalanche steps spread
+// short-string bits evenly. `(h >>> 0)` before % is required: the final xor
+// yields a signed int32 and a negative modulo would index out of bounds.
 export function stickerColor(key: string): string {
-  let h = 0;
+  let h = 0x811c9dc5;
   for (let i = 0; i < key.length; i++) {
-    h = (Math.imul(h, 31) + key.charCodeAt(i)) >>> 0;
+    h ^= key.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
   }
-  return STICKER_VARS[h % STICKER_VARS.length]!;
+  h ^= h >>> 13;
+  h = Math.imul(h, 0x5bd1e995);
+  h ^= h >>> 15;
+  return STICKER_VARS[(h >>> 0) % STICKER_VARS.length]!;
 }

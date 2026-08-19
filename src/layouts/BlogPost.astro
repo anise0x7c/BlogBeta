@@ -12,7 +12,7 @@ interface Props {
 }
 
 const { post, headings = [] } = Astro.props;
-const { title, description, pubDate, updatedDate, tags, cover } = post.data;
+const { title, description, pubDate, updatedDate, tags, cover, draft } = post.data;
 const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const hasToc = tocItems.length > 0;
 ---
@@ -33,6 +33,7 @@ const hasToc = tocItems.length > 0;
       }
       <div class="meta-row">
         <span class="date">
+          {import.meta.env.DEV && draft && (<span>🚧 - </span>)}
           <FormattedDate date={pubDate} />
         </span>
         {

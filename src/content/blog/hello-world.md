@@ -1,39 +1,36 @@
 ---
 title: "Hello, World"
-description: "The obligatory first post — what this blog is and why it exists."
+description: "! ? 神秘小站 ? !"
 pubDate: 2026-08-01
+updatedDate: 2026-08-18
 tags: ["meta", "writing"]
 draft: false
 ---
 
-Welcome to the very first post on this freshly built corner of the internet.
+## 窝趣，是神秘 HelloWorld 仪式
 
-This site is a small experiment in writing more in public. I plan to use it
-for engineering notes, half-formed ideas, and the occasional deep dive that
-doesn't fit in a single chat message.
+### "AI 太好用了你知道吗"
+整个网站**几乎都是** Vibe Coding 出来的，用的 OpenCode，同时也算是体验一下 GLM 5.2 和 DS 4。
+但到现在这个程度是还是花了好久。(菜 QAQ)
 
-## Why a personal site?
+项目从八月初就开始了，最高血压的一件事是七号那天我要清理硬盘，就打算把仓库传到 GitHub 上中转。
+主要是那时候有点上头熬了通宵，脑子已经是完全不清醒状态。我自以为已经全搞好了，但是删完东西才发现
+我其实只新建了远程仓库，根本没有 push 上去 🫠。
 
-Social platforms come and go; this domain is mine. A static site means the
-words stay legible for years without a database to maintain or a migration to
-perform. The whole thing is built with [Astro](https://astro.build), rendered
-to plain HTML at build time, and served as fast as the network allows.
+所以说那件事后之前的是白干了 (虽然我也没手写太多)，权当是做了一个 Alpha 版本罢，于是现在的这个
+BlogBeta 出现了。
 
-## What's under the hood
+### 接下来干什么
+虽然但是，现在网站处于一个能用就行的阶段，如你所见，文章页面还是有点草率。还有好多事情要做，而且
+我也有点强迫症喜欢扣细节
 
-- **Astro 7** content collections for type-safe Markdown authoring
-- **Svelte 5** islands where a sprinkle of interactivity is needed
-- **Tailwind v4** with a semantic token system so light/dark theming is a
-  variable swap, not a class audit
+**TODOS**:
+- [x] 添加主页封面插画
+- [ ] 添加 Tailwind CSS Typography 来管理 Markdown -> HTML
+- [ ] 调优播客页面界面布局
 
-Here's a tiny code sample to prove the syntax highlighting works:
-
-```ts
-function greet(name: string): string {
-  return `Hello, ${name}!`;
-}
-
-console.log(greet("world"));
-```
-
-That's all for now. More soon.
+## 技术栈
+我选择了最轮椅的打法 (bushi)
+- **Astro 7** 内容管理和路由框架，可以直接把 Markdown 渲染为一个 HTML 页面
+- **Svelte 5** 由于 Astro 默认只生成静态网页 (SSG), 所以交互的地方就用 svelte 组件
+- **Tailwind v4** 老演员这一块，不过这个网站里 Tailwind class 用的不是很多

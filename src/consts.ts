@@ -10,6 +10,7 @@ export const SITE = {
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/blogs", label: "Blog" },
+  { href: "/docs", label: "Docs"}
 ] as const;
 
 export const SOCIAL_LINKS = [
