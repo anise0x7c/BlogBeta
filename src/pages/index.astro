@@ -14,8 +14,7 @@ const recent = await getRecentPosts(6);
 <BaseLayout>
   <Image src={Background} alt="" class="bg"/>
   <div class="components">
-  <section>
-    <div class="hero-inner">
+    <section class="hero">
       <p class="eyebrow">Hello there!</p>
       <h1 class="title">Welcome to 80ml Spice Jar</h1>
       <p class="lede">
@@ -40,19 +39,19 @@ const recent = await getRecentPosts(6);
           GitHub
         </ThemedButton>
       </div>
-    </div>
-  </section>
-  {recent.length > 0 && (
-  <section class="recent">
-    <header class="section-head">
-      <h2># Recent posts</h2>
-    </header>
-    <ul class="card-list">
-      {recent.map((post) => (<li>
-        <PostCard post={post} />
-      </li>))}
-    </ul>
-  </section>)}
+    </section>
+
+    {recent.length > 0 && (
+    <section class="recent">
+      <header class="section-head">
+        <h2># Recent posts</h2>
+      </header>
+      <ul class="card-list">
+        {recent.map((post) => (<li>
+          <PostCard post={post} />
+        </li>))}
+      </ul>
+    </section>)}
   </div>
 </BaseLayout>
 
@@ -76,7 +75,7 @@ const recent = await getRecentPosts(6);
     box-shadow: var(--shadow-sticky);
   }
 
-  .hero-inner {
+  .hero {
     background-color: color-mix(in srgb, var(--color-surface) 55%, transparent);
     backdrop-filter: blur(10px) saturate(1.6) brightness(0.9);
     -webkit-backdrop-filter: blur(10px) saturate(1.6) brightness(0.9);
@@ -91,7 +90,7 @@ const recent = await getRecentPosts(6);
       background-color 0.4s var(--ease-spring);
   }
 
-  .hero-inner:hover {
+  .hero:hover {
     transform: scale(1.03);
   }
 
@@ -146,7 +145,7 @@ const recent = await getRecentPosts(6);
   }
 
   .recent {
-    padding-bottom: 4rem;
+    padding-bottom: 20rem;
   }
 
   .section-head {

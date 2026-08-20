@@ -115,6 +115,43 @@ function isActive(href: string): boolean {
       });
   };
   document.addEventListener("astro:page-load", setupThemeToggle);
+
+  // Hide-on-scroll: the listener is bound to `window` once because bundled
+  // module scripts run only once and `window` survives view-transition swaps;
+  // the header element itself is re-queried every frame since each swap
+  // replaces it with a fresh DOM node.
+  const HEADER_HIDE_THRESHOLD = 80;
+  const HEADER_DEADZONE = 4;
+  let headerLastY = window.scrollY;
+  let headerRaf = false;
+
+  const updateHeaderVisibility = () => {
+    headerRaf = false;
+    const header = document.querySelector(".site-header");
+    if (!header) return;
+    const y = window.scrollY;
+    if (y <= HEADER_HIDE_THRESHOLD || y < headerLastY - HEADER_DEADZONE) {
+      header.removeAttribute("data-hidden");
+    } else if (y > headerLastY + HEADER_DEADZONE) {
+      header.setAttribute("data-hidden", "");
+    }
+    headerLastY = y;
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (headerRaf) return;
+      headerRaf = true;
+      requestAnimationFrame(updateHeaderVisibility);
+    },
+    { passive: true },
+  );
+
+  document.addEventListener("astro:page-load", () => {
+    headerLastY = window.scrollY;
+    document.querySelector(".site-header")?.removeAttribute("data-hidden");
+  });
 </script>
 
 
@@ -124,9 +161,21 @@ function isActive(href: string): boolean {
     position: sticky;
     top: 0;
     z-index: 50;
-    max-width: 40rem;
+    max-width: var(--container-page);
     margin: auto;
     translate: 0 6px;
+    transition: translate 0.3s var(--ease-bounce-soft);
+  }
+
+  .site-header[data-hidden] {
+    translate: 0 -101%;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header {
+      transition: none;
+    }
   }
 
   .header-inner {
@@ -134,12 +183,12 @@ function isActive(href: string): boolean {
     border-radius: var(--radius-pill);
     border: solid 2px var(--color-surface);
     box-shadow: var(--shadow-sticky);
-    margin: 0 1.25rem;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
     min-height: 3.75rem;
+    margin: 0 1.25rem;
     padding: 0.9rem 1.25rem;
   }
 
