@@ -105,7 +105,7 @@ const recent = await getRecentPosts(6);
      the broken glass. Do NOT add a transition on background-color —
      the gradient would be captured mid-way and the bug would resurface. */
   @supports (-moz-appearance: none) {
-    html[data-astro-transition] .hero-inner {
+    html[data-astro-transition] .hero {
       transition: none;
       background-color: var(--color-canvas);
     }
