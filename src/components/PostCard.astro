@@ -32,8 +32,15 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
       ))}
     </div>
   </div>
-  {cover && ( /*短路求值:cover 为假值时整个表达式为 undefined,什么都不渲染*/
-    <Image src={cover} alt="" width={480} height={480} class="cover-img" />
+
+  {cover ?(
+    <div class="cover-box">
+      <Image src={cover} alt="" width={640} height={360} class="cover-img" />
+    </div>
+  ) : (
+    <div class="arrow">
+
+    </div>
   )}
 </a>
 
@@ -76,12 +83,24 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
     }
   }
 
+  .arrow {
+    z-index: 1;
+    background-color: aqua;
+    padding: 4rem;
+  }
+
+  .cover-box {
+    display: flex;
+    contain: size;
+    flex: 1;
+    margin: 1.5rem;
+  }
+
   .cover-img {
     display: block;
-    flex-shrink: 0;
-    align-self: stretch;
-    width: clamp(11rem, 25vw, 16rem);
     object-fit: cover;
+    height: 100%;
+    border-radius: 2rem;
   }
 
   @media (max-width: 640px) {
@@ -89,20 +108,21 @@ const tagChips = tags.map((tag) => ({ tag, color: stickerColor(tag) }));
       flex-direction: column;
     }
 
-    .cover-img {
+    .cover-box {
       order: -1;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      align-self: auto;
+      aspect-ratio: 21 / 9;
+      margin: 0;
+      border-radius: 0; /* 满宽贴边,由卡片 overflow: hidden 裁角 */
+      contain: none; /* 通栏顶图需正常参与高度布局 */
     }
   }
 
   .card-inner {
     display: flex;
-    flex: 1;
+    flex: 3;
     flex-direction: column;
     justify-content: center;
-    padding: 1.5rem 2rem;
+    margin: 2.7rem 1rem 2.7rem 2.7rem;
     border-radius: inherit;
   }
 
